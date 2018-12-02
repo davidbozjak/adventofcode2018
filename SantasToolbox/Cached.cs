@@ -13,22 +13,35 @@ namespace SantasToolbox
             this.Reset();
         }
 
+        public T Value => this.value.Value;
+
+        public bool IsValueCreated => this.value.IsValueCreated;
+
         public void Reset()
         {
+            this.DisposeCreatedValue();
             this.value = new Lazy<T>(this.initializer);
         }
 
         public void Dispose()
         {
-            if (this.value.IsValueCreated && this.value.Value is IDisposable disposable)
-            {
-                disposable.Dispose();
-                this.Reset();
-            }
+            this.Dispose(true);
         }
 
-        public T Value => this.value.Value;
-
-        public bool IsValueCreated => this.value.IsValueCreated;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.DisposeCreatedValue();
+            }
+        }
+        
+        private void DisposeCreatedValue()
+        {
+            if (this.value?.IsValueCreated == true && this.value.Value is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+        }
     }
 }

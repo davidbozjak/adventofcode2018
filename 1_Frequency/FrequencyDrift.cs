@@ -8,7 +8,7 @@ namespace _1_Frequency
     {
         static void Main(string[] args)
         {
-            var changeProvider = new InputProvider<int>(@"Input.txt", StringToTConverter);
+            var changeProvider = new InputProvider<int>(@"Input.txt", StringToIntConverter);
             
             int currentFrequency = 0;
 
@@ -40,7 +40,7 @@ namespace _1_Frequency
             Console.ReadKey();
         }
 
-        private static bool StringToTConverter(string input, out int result)
+        private static bool StringToIntConverter(string input, out int result)
         {
             return int.TryParse(input, out result);
         }

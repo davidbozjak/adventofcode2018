@@ -25,7 +25,8 @@ namespace _2_Checksum
                 for (j = i + 1; j < ids.Count; j++, numOfDiff = 0)
                 {
                     var idPair = ids[j];
-                    Console.WriteLine($"{Environment.NewLine}New attempt withindexes {i} and {j}: ");
+                    Console.WriteLine($"{Environment.NewLine}New attempt with indexes {i} and {j}: ");
+
                     for (int pos = 0; pos < id.Length && numOfDiff <= 1; pos++)
                     {
                         if (id[pos] != idPair[pos])

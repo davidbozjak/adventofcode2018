@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1_Frequency", "1_Frequency\1_Frequency.csproj", "{08035ADF-DF93-412A-B2FE-67F5592D7C61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2_Checksum", "2_Checksum\2_Checksum.csproj", "{0E213AFF-F391-45D1-9940-05ED3D41E157}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2_Checksum", "2_Checksum\2_Checksum.csproj", "{0E213AFF-F391-45D1-9940-05ED3D41E157}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantasToolbox", "SantasToolbox\SantasToolbox.csproj", "{7210A81A-ADDA-4AB5-910C-4B223E8C8330}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SantasToolbox", "SantasToolbox\SantasToolbox.csproj", "{7210A81A-ADDA-4AB5-910C-4B223E8C8330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3_Squares", "3_Squares\3_Squares.csproj", "{24B048D5-365B-4E9D-8CD6-1AC980E50C8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7210A81A-ADDA-4AB5-910C-4B223E8C8330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7210A81A-ADDA-4AB5-910C-4B223E8C8330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7210A81A-ADDA-4AB5-910C-4B223E8C8330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24B048D5-365B-4E9D-8CD6-1AC980E50C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24B048D5-365B-4E9D-8CD6-1AC980E50C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24B048D5-365B-4E9D-8CD6-1AC980E50C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24B048D5-365B-4E9D-8CD6-1AC980E50C8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

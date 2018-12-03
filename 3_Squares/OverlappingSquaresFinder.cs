@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SantasToolbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SantasToolbox;
 
 namespace _3_Squares
 {

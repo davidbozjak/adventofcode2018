@@ -1,7 +1,6 @@
 ﻿using SantasToolbox;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace _3_Squares
 {
@@ -12,10 +11,8 @@ namespace _3_Squares
             var squares = GetSquares();
             var squaresWithNoOverlap = new List<Square>();
 
-            for (int i = 0; i < squares.Count; i++)
+            foreach (var square in squares)
             {
-                var square = squares[i];
-
                 if (!square.OverlapsWithAny(squares))
                 {
                     squaresWithNoOverlap.Add(square);

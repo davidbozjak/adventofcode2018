@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -36,6 +37,26 @@ namespace _3_Squares
             bool containsY = y >= this.Position.Y && y < (this.Position.Y + this.Size.Height);
 
             return containsX && containsY;
+        }
+
+        public bool OverlapsWithAny(IEnumerable<Square> squares)
+        {
+            foreach (var square in squares)
+            {
+                if (this.Id == square.Id) continue;
+
+                if ((this.Position.X >= square.Position.X && this.Position.X < (square.Position.X + square.Size.Width)) ||
+                    (square.Position.X >= this.Position.X && square.Position.X < (this.Position.X + this.Size.Width)))
+                {
+                    if ((this.Position.Y >= square.Position.Y && this.Position.Y < (square.Position.Y + square.Size.Height)) ||
+                        (square.Position.Y >= this.Position.Y && square.Position.Y < (this.Position.Y + this.Size.Height)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

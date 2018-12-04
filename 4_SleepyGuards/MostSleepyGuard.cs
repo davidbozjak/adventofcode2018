@@ -15,6 +15,21 @@ namespace _4_SleepyGuards
             var shiftsByGuard = shifts
                 .GroupBy(w => w.GuardId);
 
+            PrintStrategy1Result(shiftsByGuard);
+
+            Console.WriteLine("");
+
+            PrintSrategy2Result(shiftsByGuard);
+
+            Console.WriteLine("");
+            Console.WriteLine("Done, Press any key co close.");
+            Console.ReadKey();
+        }
+        
+        private static void PrintStrategy1Result(IEnumerable<IGrouping<int, ShiftLog>> shiftsByGuard)
+        {
+            Console.WriteLine("Strategy 1:");
+
             var guardSleepMinutes = shiftsByGuard
                 .ToDictionary(w => w.Key, w => w.Sum(shift => shift.MinuteState.Count(minute => minute == GuardState.Asleep)))
                 .OrderByDescending(w => w.Value);
@@ -24,7 +39,15 @@ namespace _4_SleepyGuards
                 .Key;
 
             Console.WriteLine($"Most sleepy guard: {mostSleepyGuard}");
+            var minuteSleepFrequencyForMostSleepyGuard = GetGuardSleepFrequency(shiftsByGuard, mostSleepyGuard);
 
+            var mostSleepyMinute = minuteSleepFrequencyForMostSleepyGuard.OrderByDescending(w => w.Value).First().Key;
+            Console.WriteLine($"Most often minute: {mostSleepyMinute}");
+            Console.WriteLine($"Result Strategy 1: {mostSleepyGuard * mostSleepyMinute}");
+        }
+
+        private static Dictionary<int, int> GetGuardSleepFrequency(IEnumerable<IGrouping<int, ShiftLog>> shiftsByGuard, int mostSleepyGuard)
+        {
             Dictionary<int, int> minuteSleepFrequency = new Dictionary<int, int>(Enumerable.Range(0, 60).Select(w => new KeyValuePair<int, int>(w, 0)));
 
             var shiftsForMostSleepyGuard = shiftsByGuard
@@ -42,12 +65,34 @@ namespace _4_SleepyGuards
                 }
             }
 
-            var mostSleepyMinute = minuteSleepFrequency.OrderByDescending(w => w.Value).First().Key;
-            Console.WriteLine($"Most often minute: {mostSleepyMinute}");
-            Console.WriteLine($"Result: {mostSleepyGuard * mostSleepyMinute}");
+            return minuteSleepFrequency;
+        }
 
-            Console.WriteLine("Done, Press any key co close.");
-            Console.ReadKey();
+        private static void PrintSrategy2Result(IEnumerable<IGrouping<int, ShiftLog>> shiftsByGuard)
+        {
+            Console.WriteLine("Strategy 2:");
+
+            int mostConsistentlyAsleepGuardID = -1;
+            int mostFrequentlyAsleepMinute = -1;
+            int mostFrequentlyAsleepMinuteValue = -1;
+
+            foreach (var guardId in shiftsByGuard.Select(w => w.Key))
+            {
+                var minuteSleepFrequency = GetGuardSleepFrequency(shiftsByGuard, guardId);
+
+                var mostFrequentlyAsleepMinuteForGuard = minuteSleepFrequency.OrderByDescending(w => w.Value).First();
+
+                if (mostFrequentlyAsleepMinuteForGuard.Value > mostFrequentlyAsleepMinuteValue)
+                {
+                    mostConsistentlyAsleepGuardID = guardId;
+                    mostFrequentlyAsleepMinute = mostFrequentlyAsleepMinuteForGuard.Key;
+                    mostFrequentlyAsleepMinuteValue = mostFrequentlyAsleepMinuteForGuard.Value;
+                }
+            }
+
+            Console.WriteLine($"Most Consistently Asleep GuardID: {mostConsistentlyAsleepGuardID}");
+            Console.WriteLine($"Most Consistently Asleep Minute: {mostFrequentlyAsleepMinute}");
+            Console.WriteLine($"Result Strategy 2: {mostConsistentlyAsleepGuardID * mostFrequentlyAsleepMinute}");
         }
 
         private static List<ShiftLog> GetShifts(List<SleepLogEntry> logs)

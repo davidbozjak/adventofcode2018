@@ -1,45 +1,89 @@
 ﻿using SantasToolbox;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace _5_polymers
 {
     class PolymerReaction
     {
+        private const int reactDiff = 'a' - 'A';
+
         static void Main(string[] args)
         {
             var polymerProvider = new InputProvider<string>("Input.txt", GetString);
             polymerProvider.MoveNext();
 
             string polymer = polymerProvider.Current;
+            
+            var polymerLengthAfterInitialReaction = ReactPolymer(polymer);
 
-            var polymerBuilder = new StringBuilder(polymer);
+            Console.WriteLine($"Part 1: polymer length after initial reaction: {polymerLengthAfterInitialReaction}");
 
-            const int reactDiff = 'a' - 'A';
+            Console.WriteLine("Part 2:");
 
-            for (bool hasReacted = true; hasReacted; )
+            var uniqueUnits = GetAllUniqueUnits(polymer);
+            int minLength = int.MaxValue;
+
+            foreach (var charToRemove in uniqueUnits)
             {
-                hasReacted = false;
-                Console.WriteLine($"New loop, polymer length: {polymerBuilder.Length}");
+                var modifiedPolymer = new StringBuilder(polymer)
+                    .RemoveAllOccurrencesOfChar((char)charToRemove)
+                    .RemoveAllOccurrencesOfChar((char)(charToRemove - reactDiff))
+                    .ToString();
 
-                for (int i = 1; i < polymerBuilder.Length; i++)
+                var modifiedPolymerLengthAfterInitialReaction = ReactPolymer(modifiedPolymer);
+
+                if (modifiedPolymerLengthAfterInitialReaction < minLength)
+                {
+                    minLength = modifiedPolymerLengthAfterInitialReaction;
+                    Console.WriteLine($"New min length found: {modifiedPolymerLengthAfterInitialReaction} after removing {(char)charToRemove}");
+                }
+            }
+            
+            Console.WriteLine("");
+            Console.WriteLine("Done, Press any key co close.");
+            Console.ReadKey();
+        }
+
+        private static int ReactPolymer(string polymer)
+        {
+            var polymerBuilder = new StringBuilder(polymer);
+            
+            for (int i = 1, length = int.MaxValue; length > polymerBuilder.Length; i = Math.Max(1, i - 1))
+            {
+                length = polymerBuilder.Length;
+
+                for (; i < polymerBuilder.Length; i++)
                 {
                     var diff = Math.Abs(polymerBuilder[i] - polymerBuilder[i - 1]);
 
                     if (diff == reactDiff)
                     {
-                        hasReacted = true;
                         polymerBuilder.Remove(i - 1, 2);
                         break;
                     }
                 }
             }
 
-            Console.WriteLine($"No more reactions, final polymer length: {polymerBuilder.Length}");
+            return polymerBuilder.Length;
+        }
+        
+        private static HashSet<int> GetAllUniqueUnits(string polymer)
+        {
+            var set = new HashSet<int>();
 
-            Console.WriteLine("");
-            Console.WriteLine("Done, Press any key co close.");
-            Console.ReadKey();
+            for (int i = 0; i < polymer.Length; i++)
+            {
+                if (polymer[i] < 'a') continue;
+
+                if (!set.Contains(polymer[i]))
+                {
+                    set.Add(polymer[i]);
+                }
+            }
+
+            return set;
         }
 
         private static bool GetString(string value, out string result)

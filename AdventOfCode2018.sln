@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3_Squares", "3_Squares\3_Sq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4_SleepyGuards", "4_SleepyGuards\4_SleepyGuards.csproj", "{BA51367B-99DC-45BD-B6DF-C46DC81DA219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5_polymers", "5_polymers\5_polymers.csproj", "{BBA477EE-FE0F-4467-A73C-3D3F76A8372B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5_Polymers", "5_polymers\5_Polymers.csproj", "{BBA477EE-FE0F-4467-A73C-3D3F76A8372B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6_Areas", "6_Areas\6_Areas.csproj", "{2601D9D4-F0F5-4B1B-9E45-DB88D2E6DE38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BBA477EE-FE0F-4467-A73C-3D3F76A8372B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA477EE-FE0F-4467-A73C-3D3F76A8372B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA477EE-FE0F-4467-A73C-3D3F76A8372B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2601D9D4-F0F5-4B1B-9E45-DB88D2E6DE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2601D9D4-F0F5-4B1B-9E45-DB88D2E6DE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2601D9D4-F0F5-4B1B-9E45-DB88D2E6DE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2601D9D4-F0F5-4B1B-9E45-DB88D2E6DE38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

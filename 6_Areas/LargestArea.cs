@@ -37,6 +37,24 @@ namespace _6_Areas
             var largestArea = areaSizes.OrderByDescending(w => w.Value).First();
             Console.WriteLine($"Part 1: Largest area: {largestArea.Key} with size: {largestArea.Value}");
 
+            const int areaDistanceCutoff = 10000;
+            int sizeOfSafeRegion = 0;
+
+            for (int x = minX; x < maxX; x++)
+            {
+                for (int y = minY; y < maxY; y++)
+                {
+                    var distanceToAllPoints = points.Sum(w => GetDistance(x, y, w.X, w.Y));
+
+                    if (distanceToAllPoints < areaDistanceCutoff)
+                    {
+                        sizeOfSafeRegion++;
+                    }
+                }
+            }
+
+            Console.WriteLine($"Part 2: 'Safe' region size: {sizeOfSafeRegion}");
+
             Console.WriteLine("");
             Console.WriteLine("Done");
             Console.ReadKey();
@@ -59,11 +77,11 @@ namespace _6_Areas
             }
 
             return closestPoint;
+        }
 
-            int GetDistance(int x1, int y1, int x2, int y2)
-            {
-                return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
-            }
+        private static int GetDistance(int x1, int y1, int x2, int y2)
+        {
+            return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
         }
 
         private static List<IdentifiablePoint> GetPoints()

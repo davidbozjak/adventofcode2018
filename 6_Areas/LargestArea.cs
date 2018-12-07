@@ -97,9 +97,7 @@ namespace _6_Areas
 
             return points;
         }
-
         
-
         private static bool GetPoint(string value, out IdentifiablePoint result)
         {
             var regex = new Regex(@"\d+");

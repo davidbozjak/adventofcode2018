@@ -1,6 +1,7 @@
 ﻿using SantasToolbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _7_Steps
 {
@@ -10,9 +11,125 @@ namespace _7_Steps
         {
             var constraints = GetConstraints();
 
+            var nodes = new Dictionary<char, Node>();
 
+            foreach (var constraint in constraints)
+            {
+                var first = CreateOrReturnNode(constraint.First);
+                var after = CreateOrReturnNode(constraint.After);
 
-            Console.WriteLine("Hello World!");
+                after.AddParent(first);
+            }
+
+            PrintResultForPart1(nodes);
+            Console.WriteLine("");
+            PrintResultForPart2(nodes);
+
+            Console.WriteLine("");
+            Console.WriteLine("Done");
+            Console.ReadKey();
+
+            Node CreateOrReturnNode(char nodeId)
+            {
+                if (!nodes.ContainsKey(nodeId))
+                {
+                    nodes.Add(nodeId, new Node(nodeId));
+                }
+
+                return nodes[nodeId];
+            }
+        }
+
+        private static void PrintResultForPart1(Dictionary<char, Node> nodes)
+        {
+            var stepPlan = new List<char>();
+            var stepsToUse = nodes.Values.ToList();
+
+            while (stepsToUse.Count > 0)
+            {
+                var unblockedStep = stepsToUse
+                    .Where(w => w.Parents.All(parent => stepPlan.Contains(parent.Id)))
+                    .OrderBy(w => w.Id)
+                    .First();
+
+                stepPlan.Add(unblockedStep.Id);
+                stepsToUse.Remove(unblockedStep);
+            }
+
+            Console.WriteLine($"Part 1: Steps: {new string(stepPlan.ToArray())}");
+        }
+
+        private static void PrintResultForPart2(Dictionary<char, Node> nodes)
+        {
+            var stepPlan = new List<char>();
+            var stepsToUse = nodes.Values.ToList();
+
+            const int numOfWorkers = 5;
+            var workerAssignment = new Node[numOfWorkers];
+            int now = 0;
+
+            while (stepsToUse.Count > 0)
+            {
+                while (workerAssignment.Contains(null))
+                {
+                    var workerIndex = GetIndexOfNextAvaliableWorkerSlot();
+
+                    var unblockedStep = stepsToUse
+                        .Where(w => w.Parents.All(parent => stepPlan.Contains(parent.Id)))
+                        .OrderBy(w => w.Id)
+                        .FirstOrDefault();
+
+                    if (unblockedStep == null)
+                    {
+                        break;
+                    }
+
+                    unblockedStep.Start(now);
+                    stepsToUse.Remove(unblockedStep);
+
+                    workerAssignment[workerIndex] = unblockedStep;
+                }
+
+                var completedIndex = GetIndexOfWorkerDoneFirst();
+                var compeltedStep = workerAssignment[completedIndex];
+                workerAssignment[completedIndex] = null;
+
+                stepPlan.Add(compeltedStep.Id);
+                now = compeltedStep.CompletedAt;
+            }
+            
+            Console.WriteLine($"Part 2: Steps: {new string(stepPlan.ToArray())} Completed at: {now}");
+
+            int GetIndexOfNextAvaliableWorkerSlot()
+            {
+
+                for (int i = 0; i < workerAssignment.Length; i++)
+                {
+                    if (workerAssignment[i] == null)
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
+            int GetIndexOfWorkerDoneFirst()
+            {
+                int firstCompletedAt = int.MaxValue;
+                int firstCompleted = -1;
+
+                for (int i = 0; i < workerAssignment.Length; i++)
+                {
+                    if (workerAssignment[i] != null && workerAssignment[i].CompletedAt < firstCompletedAt)
+                    {
+                        firstCompletedAt = workerAssignment[i].CompletedAt;
+                        firstCompleted = i;
+                    }
+                }
+
+                return firstCompleted;
+            }
         }
 
         private static List<Constraint> GetConstraints()
@@ -44,6 +161,39 @@ namespace _7_Steps
         }
     }
     
+    class Node
+    {
+        private readonly List<Node> parents = new List<Node>();
+
+        public Node(char Id)
+        {
+            this.Id = Id;
+            this.Duration = 61 + (Id - 'A');
+            this.CompletedAt = int.MinValue;
+        }
+
+        public char Id { get; }
+
+        public int Duration { get; }
+
+        public int CompletedAt { get; private set; }
+        
+        public IReadOnlyList<Node> Parents => this.parents.AsReadOnly();
+
+        public void AddParent(Node n)
+        {
+            if (!this.parents.Select(w => w.Id).Any(w => w == n.Id))
+            {
+                this.parents.Add(n);
+            }
+        }
+
+        public void Start(int now)
+        {
+            this.CompletedAt = now + Duration;
+        }
+    }
+
     class Constraint
     {
         public Constraint(string instruction)

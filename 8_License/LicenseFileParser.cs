@@ -15,6 +15,8 @@ namespace _8_License
             var rootNode = GetNode(licenseInput, out int end);
 
             Console.WriteLine($"Part 1: Sum of metadata: {rootNode.MetadataSum}");
+            Console.WriteLine("");
+            Console.WriteLine($"Part 2: Value of root node: {rootNode.Value}");
 
             Console.WriteLine("");
             Console.WriteLine("Done");
@@ -76,5 +78,30 @@ namespace _8_License
         public IReadOnlyCollection<int> Metadata;
 
         public int MetadataSum => this.Children.Sum(w => w.MetadataSum) + this.Metadata.Sum();
+
+        public int Value
+        {
+            get
+            {
+                if (this.Children.Count == 0)
+                {
+                    return this.MetadataSum;
+                }
+                else
+                {
+                    int value = 0;
+
+                    foreach (var index in Metadata)
+                    {
+                        if (index >= 1 && index <= this.Children.Count)
+                        {
+                            value += this.Children.ElementAt(index - 1).Value;
+                        }
+                    }
+
+                    return value;
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SantasToolbox;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -11,14 +12,32 @@ namespace _8_License
         {
             var licenseInput = GetLicenseInput();
 
-            for (int i = 0; i < licenseInput.Length; i++)
-            {
+            var rootNode = GetNode(licenseInput, out int end);
 
-            }
+            Console.WriteLine($"Part 1: Sum of metadata: {rootNode.MetadataSum}");
 
             Console.WriteLine("");
             Console.WriteLine("Done");
             Console.ReadKey();
+        }
+
+        private static Node GetNode(IEnumerable<int> input, out int end)
+        {
+            var numChildren = input.First();
+            var numMetadata = input.Skip(1).First();
+
+            var children = new Node[numChildren];
+            var maxLast = 0;
+
+            for (int i = 0; i < numChildren; i++)
+            {
+                children[i] = GetNode(input.Skip(2 + maxLast), out int childEnd);
+                maxLast += childEnd;
+            }
+
+            end = 2 + maxLast + numMetadata;
+
+            return new Node(children, input.Skip(2 + maxLast).Take(numMetadata));
         }
 
         private static int[] GetLicenseInput()
@@ -40,10 +59,22 @@ namespace _8_License
 
     class Node
     {
-        char Id { get; }
+        private static char IdCounter = 'A';
 
-        int NumChildren { get; }
+        public Node(IEnumerable<Node> children, IEnumerable<int> metadata)
+        {
+            this.Id = IdCounter++;
 
-        int NumMetadataNodes { get; }
+            this.Children = children.ToList();
+            this.Metadata = metadata.ToList();
+        }
+
+        public char Id { get; }
+
+        public IReadOnlyCollection<Node> Children;
+
+        public IReadOnlyCollection<int> Metadata;
+
+        public int MetadataSum => this.Children.Sum(w => w.MetadataSum) + this.Metadata.Sum();
     }
 }

@@ -23,12 +23,12 @@ namespace _8_License
             Console.ReadKey();
         }
 
-        private static Node GetNode(IEnumerable<int> input, out int end)
+        private static LicenseNode GetNode(IEnumerable<int> input, out int end)
         {
             var numChildren = input.First();
             var numMetadata = input.Skip(1).First();
 
-            var children = new Node[numChildren];
+            var children = new LicenseNode[numChildren];
             var maxLast = 0;
 
             for (int i = 0; i < numChildren; i++)
@@ -39,7 +39,7 @@ namespace _8_License
 
             end = 2 + maxLast + numMetadata;
 
-            return new Node(children, input.Skip(2 + maxLast).Take(numMetadata));
+            return new LicenseNode(children, input.Skip(2 + maxLast).Take(numMetadata));
         }
 
         private static int[] GetLicenseInput()
@@ -59,49 +59,5 @@ namespace _8_License
         }
     }
 
-    class Node
-    {
-        private static char IdCounter = 'A';
-
-        public Node(IEnumerable<Node> children, IEnumerable<int> metadata)
-        {
-            this.Id = IdCounter++;
-
-            this.Children = children.ToList();
-            this.Metadata = metadata.ToList();
-        }
-
-        public char Id { get; }
-
-        public IReadOnlyCollection<Node> Children;
-
-        public IReadOnlyCollection<int> Metadata;
-
-        public int MetadataSum => this.Children.Sum(w => w.MetadataSum) + this.Metadata.Sum();
-
-        public int Value
-        {
-            get
-            {
-                if (this.Children.Count == 0)
-                {
-                    return this.MetadataSum;
-                }
-                else
-                {
-                    int value = 0;
-
-                    foreach (var index in Metadata)
-                    {
-                        if (index >= 1 && index <= this.Children.Count)
-                        {
-                            value += this.Children.ElementAt(index - 1).Value;
-                        }
-                    }
-
-                    return value;
-                }
-            }
-        }
-    }
+    
 }

@@ -23,23 +23,23 @@ namespace _8_License
             Console.ReadKey();
         }
 
-        private static LicenseNode GetNode(IEnumerable<int> input, out int end)
+        private static LicenseNode GetNode(IEnumerable<int> input, out int length)
         {
             var numChildren = input.First();
             var numMetadata = input.Skip(1).First();
 
             var children = new LicenseNode[numChildren];
-            var maxLast = 0;
+            var lengthOfAllChildren = 0;
 
             for (int i = 0; i < numChildren; i++)
             {
-                children[i] = GetNode(input.Skip(2 + maxLast), out int childEnd);
-                maxLast += childEnd;
+                children[i] = GetNode(input.Skip(2 + lengthOfAllChildren), out int childLength);
+                lengthOfAllChildren += childLength;
             }
 
-            end = 2 + maxLast + numMetadata;
+            length = 2 + lengthOfAllChildren + numMetadata;
 
-            return new LicenseNode(children, input.Skip(2 + maxLast).Take(numMetadata));
+            return new LicenseNode(children, input.Skip(2 + lengthOfAllChildren).Take(numMetadata));
         }
 
         private static int[] GetLicenseInput()
@@ -58,6 +58,4 @@ namespace _8_License
             return result.Length > 0;
         }
     }
-
-    
 }

@@ -5,29 +5,22 @@ namespace _8_License
 {
     class LicenseNode
     {
-        private static char IdCounter = 'A';
+        private readonly LicenseNode[] children;
+        private readonly int[] metadata;
 
         public LicenseNode(IEnumerable<LicenseNode> children, IEnumerable<int> metadata)
         {
-            this.Id = IdCounter++;
-
-            this.Children = children.ToList();
-            this.Metadata = metadata.ToList();
+            this.children = children.ToArray();
+            this.metadata = metadata.ToArray();
         }
 
-        public char Id { get; }
-
-        public IReadOnlyCollection<LicenseNode> Children;
-
-        public IReadOnlyCollection<int> Metadata;
-
-        public int MetadataSum => this.Children.Sum(w => w.MetadataSum) + this.Metadata.Sum();
+        public int MetadataSum => this.children.Sum(w => w.MetadataSum) + this.metadata.Sum();
 
         public int Value
         {
             get
             {
-                if (this.Children.Count == 0)
+                if (this.children.Length == 0)
                 {
                     return this.MetadataSum;
                 }
@@ -35,11 +28,11 @@ namespace _8_License
                 {
                     int value = 0;
 
-                    foreach (var index in Metadata)
+                    foreach (var index in metadata)
                     {
-                        if (index >= 1 && index <= this.Children.Count)
+                        if (index >= 1 && index <= this.children.Length)
                         {
-                            value += this.Children.ElementAt(index - 1).Value;
+                            value += this.children.ElementAt(index - 1).Value;
                         }
                     }
 

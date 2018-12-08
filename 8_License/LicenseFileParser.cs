@@ -1,6 +1,5 @@
 ﻿using SantasToolbox;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -11,8 +10,9 @@ namespace _8_License
         static void Main(string[] args)
         {
             var licenseInput = GetLicenseInput();
+            var licenseReader = new EnumerableReader<int>(licenseInput);
 
-            var rootNode = GetNode(licenseInput, out int end);
+            var rootNode = GetNode(licenseReader);
 
             Console.WriteLine($"Part 1: Sum of metadata: {rootNode.MetadataSum}");
             Console.WriteLine("");
@@ -23,23 +23,19 @@ namespace _8_License
             Console.ReadKey();
         }
 
-        private static LicenseNode GetNode(IEnumerable<int> input, out int length)
+        private static LicenseNode GetNode(EnumerableReader<int> input)
         {
-            var numChildren = input.First();
-            var numMetadata = input.Skip(1).First();
+            var numChildren = input.TakeFirst();
+            var numMetadata = input.TakeFirst();
 
             var children = new LicenseNode[numChildren];
-            var lengthOfAllChildren = 0;
 
             for (int i = 0; i < numChildren; i++)
             {
-                children[i] = GetNode(input.Skip(2 + lengthOfAllChildren), out int childLength);
-                lengthOfAllChildren += childLength;
+                children[i] = GetNode(input);
             }
 
-            length = 2 + lengthOfAllChildren + numMetadata;
-
-            return new LicenseNode(children, input.Skip(2 + lengthOfAllChildren).Take(numMetadata));
+            return new LicenseNode(children, input.TakeN(numMetadata));
         }
 
         private static int[] GetLicenseInput()

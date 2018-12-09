@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6_Areas", "6_Areas\6_Areas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "7_Steps", "7_Steps\7_Steps.csproj", "{B449B7ED-8148-4223-9E2A-92334172CA61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8_License", "8_License\8_License.csproj", "{FF28ED9E-D816-476A-BD7C-4112A5EB17C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "8_License", "8_License\8_License.csproj", "{FF28ED9E-D816-476A-BD7C-4112A5EB17C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "9_Marbles", "8_Marbles\9_Marbles.csproj", "{B5F34ADE-120E-4328-B484-CBD9CA564C5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{FF28ED9E-D816-476A-BD7C-4112A5EB17C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF28ED9E-D816-476A-BD7C-4112A5EB17C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF28ED9E-D816-476A-BD7C-4112A5EB17C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F34ADE-120E-4328-B484-CBD9CA564C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F34ADE-120E-4328-B484-CBD9CA564C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F34ADE-120E-4328-B484-CBD9CA564C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F34ADE-120E-4328-B484-CBD9CA564C5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

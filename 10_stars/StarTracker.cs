@@ -23,14 +23,21 @@ namespace _10_stars
 
             for (int step = 0; true; step++)
             {
-                Console.Clear();
-                Console.WriteLine($"Step {step}:\n");
+                var maxStarsOnSameX = stars.GroupBy(w => w.Position.X).Select(group => group.Count()).Max();
+                var maxStarsOnSameY = stars.GroupBy(w => w.Position.Y).Select(group => group.Count()).Max();
 
-                var minX = stars.Min(w => w.Position.X);
-                var maxX = stars.Max(w => w.Position.X);
-                VisualizeSky(new EnumerableReader<Star>(stars.OrderBy(w => w.Position.Y).ToArray()), minX, maxX);
+                if (maxStarsOnSameX + maxStarsOnSameY > 50)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Step {step}:\n");
 
-                Console.ReadKey();
+                    var minX = stars.Min(w => w.Position.X);
+                    var maxX = stars.Max(w => w.Position.X);
+                    VisualizeSky(new EnumerableReader<Star>(stars.OrderBy(w => w.Position.Y).ToArray()), minX, maxX);
+
+                    Console.ReadKey();
+                }
+                
                 stars.ForEach(star => star.MakeStep());
             }
 

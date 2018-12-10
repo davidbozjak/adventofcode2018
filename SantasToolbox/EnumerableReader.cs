@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace _8_License
+namespace SantasToolbox
 {
-    class EnumerableReader<T>
+    public class EnumerableReader<T>
     {
         private readonly T[] dataSource;
         private IEnumerable<T> workingStream;
@@ -16,7 +16,7 @@ namespace _8_License
 
         public T TakeFirst()
         {
-            var first = workingStream.First();
+            var first = workingStream.FirstOrDefault();
             workingStream = workingStream.Skip(1);
             return first;
         }

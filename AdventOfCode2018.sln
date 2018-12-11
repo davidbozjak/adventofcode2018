@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "8_License", "8_License\8_Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "9_Marbles", "8_Marbles\9_Marbles.csproj", "{B5F34ADE-120E-4328-B484-CBD9CA564C5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10_stars", "10_stars\10_stars.csproj", "{130DCD40-2451-4BFB-AD6C-A2B273164E35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "10_stars", "10_stars\10_stars.csproj", "{130DCD40-2451-4BFB-AD6C-A2B273164E35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11_Fuel", "11_Fuel\11_Fuel.csproj", "{73CC3E2F-14D3-4B9C-A273-AAD9620E1565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{130DCD40-2451-4BFB-AD6C-A2B273164E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{130DCD40-2451-4BFB-AD6C-A2B273164E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{130DCD40-2451-4BFB-AD6C-A2B273164E35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73CC3E2F-14D3-4B9C-A273-AAD9620E1565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CC3E2F-14D3-4B9C-A273-AAD9620E1565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CC3E2F-14D3-4B9C-A273-AAD9620E1565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CC3E2F-14D3-4B9C-A273-AAD9620E1565}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

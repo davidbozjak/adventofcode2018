@@ -17,8 +17,8 @@ namespace _13_Carts
             {
                 world.MakeStep();
 
-                Print(world);
-                Console.ReadKey();
+                //Print(world);
+                //Console.ReadKey();
 
                 for(int i = 0; i < world.Carts.Count; i++)
                 {
@@ -43,7 +43,7 @@ namespace _13_Carts
             int maxX = world.Tracks.Max(w => w.Position.X);
             int maxY = world.Tracks.Max(w => w.Position.Y);
 
-            for (int y = 0; y < maxY; y++)
+            for (int y = 0; y <= maxY; y++)
             {
                 var row = new StringBuilder(new string(Enumerable.Repeat(' ', maxX + 1).ToArray()));
 
@@ -129,40 +129,12 @@ namespace _13_Carts
                     track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
                 }
 
-                if (track.TrackDirection == TrackDirection.RightTurn)
+                if (track.TrackDirection == TrackDirection.RightTurn || track.TrackDirection == TrackDirection.LeftTurn)
                 {
-                    var right = tracks.FirstOrDefault(t => 
-                        (t.TrackDirection == TrackDirection.Horizontal || t.TrackDirection == TrackDirection.Intersection) &&
-                        t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
-
-                    if (right != null)
-                    {
-                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Up] = right;
-                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Left] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
-                    }
-                    else
-                    {
-                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
-                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
-                    }
-                }
-
-                if (track.TrackDirection == TrackDirection.LeftTurn)
-                {
-                    var left = tracks.FirstOrDefault(t =>
-                        (t.TrackDirection == TrackDirection.Horizontal || t.TrackDirection == TrackDirection.Intersection) &&
-                        t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
-
-                    if (left != null)
-                    {
-                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Up] = left;
-                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
-                    }
-                    else
-                    {
-                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
-                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Left] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
-                    }
+                    track.ConnectedTracs[Direction.Up]    = tracks.FirstOrDefault(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
+                    track.ConnectedTracs[Direction.Down]  = tracks.FirstOrDefault(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
+                    track.ConnectedTracs[Direction.Left]  = tracks.FirstOrDefault(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
+                    track.ConnectedTracs[Direction.Right] = tracks.FirstOrDefault(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
                 }
             }
 
@@ -268,25 +240,25 @@ namespace _13_Carts
         {
             if (this.Track.TrackDirection == TrackDirection.LeftTurn)
             {
-                this.Direction = LeftTurn();
+                this.Direction = TurnLeft();
             }
             else if (this.Track.TrackDirection == TrackDirection.RightTurn)
             {
-                this.Direction = RightTurn();
+                this.Direction = TurnRight();
             }
             else if (this.Track.TrackDirection == TrackDirection.Intersection)
             {
                 switch (this.IntersectionDecision)
                 {
                     case IntersectionDecision.TurnLeft:
-                        this.Direction = LeftTurn();
+                        this.Direction = TurnLeft();
                         this.IntersectionDecision = IntersectionDecision.Straight;
                         break;
                     case IntersectionDecision.Straight:
                         this.IntersectionDecision = IntersectionDecision.TurnRight;
                         break;
                     case IntersectionDecision.TurnRight:
-                        this.Direction = RightTurn();
+                        this.Direction = TurnRight();
                         this.IntersectionDecision = IntersectionDecision.TurnLeft;
                         break;
                 }
@@ -294,7 +266,7 @@ namespace _13_Carts
             
             this.Track = this.Track.ConnectedTracs[this.Direction] ?? throw new Exception();
 
-            Direction LeftTurn()
+            Direction TurnLeft()
             {
                 switch (this.Direction)
                 {
@@ -311,7 +283,7 @@ namespace _13_Carts
                 }
             }
 
-            Direction RightTurn()
+            Direction TurnRight()
             {
                 switch (this.Direction)
                 {
@@ -344,7 +316,7 @@ namespace _13_Carts
 
         public void MakeStep()
         {
-            var movingOrder = this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X);
+            var movingOrder = this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X).ToList();
 
             foreach (var cart in movingOrder)
             {

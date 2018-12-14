@@ -10,15 +10,15 @@ namespace _14_Recipes
         static void Main(string[] args)
         {
             const int input = 635041;
-            const int minRecepiesToGenerate = input + 10;
+            string inputStr = input.ToString();
 
             var recepies = new LinkedList<int>();
             var firstElf = recepies.AddLast(3);
             var secondElf = recepies.AddLast(7);
 
-            var result = new StringBuilder(10);
+            var result = new StringBuilder(input.ToString().Length);
 
-            while (recepies.Count < minRecepiesToGenerate)
+            while (true)
             {
                 var newRecipeSum = firstElf.Value + secondElf.Value;
 
@@ -26,9 +26,18 @@ namespace _14_Recipes
                 {
                     recepies.AddLast(newRecipe);
 
-                    if (recepies.Count > input && recepies.Count <= minRecepiesToGenerate)
+                    result.Append(newRecipe.ToString());
+                    if (result.Length > inputStr.Length)
                     {
-                        result.Append(newRecipe.ToString());
+                        result.Remove(0, 1);
+                    }
+
+                    if (result.ToString() == inputStr)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"Part2: {recepies.Count - inputStr.Length}");
+                        Console.ReadKey();
+                        return;
                     }
                 }
 
@@ -36,10 +45,6 @@ namespace _14_Recipes
                 secondElf = GetNextRecipe(secondElf);
             }
             
-            Console.WriteLine();
-            Console.WriteLine($"Part1: {result}");
-            Console.ReadKey();
-
             LinkedListNode<int> GetNextRecipe(LinkedListNode<int> recipe)
             {
                 for (int i = 0, count = 1 + recipe.Value; i < count; recipe = recipe.Next ?? recepies.First, i++) ;

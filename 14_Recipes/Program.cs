@@ -9,7 +9,7 @@ namespace _14_Recipes
     {
         static void Main(string[] args)
         {
-            const int input = 2018;
+            const int input = 635041;
             const int minRecepiesToGenerate = input + 10;
 
             var recepies = new LinkedList<int>();
@@ -50,10 +50,11 @@ namespace _14_Recipes
 
         static IEnumerable<int> GetDigitsOfNum(int num)
         {
-            for (int digit = num % 10; num > 0; num = num / 10, digit = num % 10)
+            do
             {
-                yield return digit;
-            }
+                yield return num % 10;
+                num = num / 10;
+            } while (num > 0);
         }
     }
 }

@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "11_Fuel", "11_Fuel\11_Fuel.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "12_Plants", "12_Plants\12_Plants.csproj", "{6FBC5279-B632-464A-B285-0041CBA7B5D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13_Carts", "13_Carts\13_Carts.csproj", "{905A2C81-A0BA-44C9-BA81-9A00826A99FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13_Carts", "13_Carts\13_Carts.csproj", "{905A2C81-A0BA-44C9-BA81-9A00826A99FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_Recipes", "14_Recipes\14_Recipes.csproj", "{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{905A2C81-A0BA-44C9-BA81-9A00826A99FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{905A2C81-A0BA-44C9-BA81-9A00826A99FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{905A2C81-A0BA-44C9-BA81-9A00826A99FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

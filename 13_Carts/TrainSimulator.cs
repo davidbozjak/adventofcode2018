@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 
 namespace _13_Carts
 {
@@ -11,10 +12,13 @@ namespace _13_Carts
         static void Main(string[] args)
         {
             var world = GetInitialState();
-
+            
             for (int tick = 0; ; tick++)
             {
                 world.MakeStep();
+
+                Print(world);
+                Console.ReadKey();
 
                 for(int i = 0; i < world.Carts.Count; i++)
                 {
@@ -29,6 +33,31 @@ namespace _13_Carts
                         }
                     }
                 }
+            }
+        }
+
+        private static void Print(World world)
+        {
+            Console.Clear();
+
+            int maxX = world.Tracks.Max(w => w.Position.X);
+            int maxY = world.Tracks.Max(w => w.Position.Y);
+
+            for (int y = 0; y < maxY; y++)
+            {
+                var row = new StringBuilder(new string(Enumerable.Repeat(' ', maxX + 1).ToArray()));
+
+                foreach (var track in world.Tracks.Where(w => w.Position.Y == y))
+                {
+                    row[track.Position.X] = track.CharRepresentation;
+                }
+
+                foreach (var cart in world.Carts.Where(w => w.Position.Y == y))
+                {
+                    row[cart.Position.X] = cart.CharRepresentation;
+                }
+
+                Console.WriteLine(row);
             }
         }
 
@@ -102,33 +131,37 @@ namespace _13_Carts
 
                 if (track.TrackDirection == TrackDirection.RightTurn)
                 {
-                    var right = tracks.FirstOrDefault(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
+                    var right = tracks.FirstOrDefault(t => 
+                        (t.TrackDirection == TrackDirection.Horizontal || t.TrackDirection == TrackDirection.Intersection) &&
+                        t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
 
                     if (right != null)
                     {
-                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Left] = right;
-                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Up] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
+                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Up] = right;
+                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Left] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
                     }
                     else
                     {
-                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
-                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
+                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
+                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
                     }
                 }
 
                 if (track.TrackDirection == TrackDirection.LeftTurn)
                 {
-                    var left = tracks.FirstOrDefault(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
+                    var left = tracks.FirstOrDefault(t =>
+                        (t.TrackDirection == TrackDirection.Horizontal || t.TrackDirection == TrackDirection.Intersection) &&
+                        t.Position.Y == track.Position.Y && t.Position.X == track.Position.X - 1);
 
                     if (left != null)
                     {
-                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Right] = left;
-                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Up] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
+                        track.ConnectedTracs[Direction.Left] = track.ConnectedTracs[Direction.Up] = left;
+                        track.ConnectedTracs[Direction.Down] = track.ConnectedTracs[Direction.Right] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y + 1);
                     }
                     else
                     {
-                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Left] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
-                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
+                        track.ConnectedTracs[Direction.Right] = track.ConnectedTracs[Direction.Down] = tracks.First(t => t.Position.Y == track.Position.Y && t.Position.X == track.Position.X + 1);
+                        track.ConnectedTracs[Direction.Up] = track.ConnectedTracs[Direction.Left] = tracks.First(t => t.Position.X == track.Position.X && t.Position.Y == track.Position.Y - 1);
                     }
                 }
             }
@@ -171,6 +204,28 @@ namespace _13_Carts
         public TrackDirection TrackDirection { get; }
 
         public ConnectedTracs ConnectedTracs { get; } = new ConnectedTracs();
+
+        public char CharRepresentation
+        {
+            get
+            {
+                switch (this.TrackDirection)
+                {
+                    case TrackDirection.Horizontal:
+                        return '-';
+                    case TrackDirection.Intersection:
+                        return '+';
+                    case TrackDirection.Vertical:
+                        return '|';
+                    case TrackDirection.LeftTurn:
+                        return '\\';
+                    case TrackDirection.RightTurn:
+                        return '/';
+                    default:
+                        throw new Exception();
+                }
+            }
+        }
     }
 
     class Cart
@@ -188,6 +243,26 @@ namespace _13_Carts
         public IntersectionDecision IntersectionDecision { get; private set; } = IntersectionDecision.TurnLeft;
 
         public Point Position => this.Track.Position;
+
+        public char CharRepresentation
+        {
+            get
+            {
+                switch (this.Direction)
+                {
+                    case Direction.Down:
+                        return 'v';
+                    case Direction.Up:
+                        return '^';
+                    case Direction.Left:
+                        return '<';
+                    case Direction.Right:
+                        return '>';
+                    default:
+                        throw new Exception();
+                }
+            }
+        }
 
         public void Move()
         {

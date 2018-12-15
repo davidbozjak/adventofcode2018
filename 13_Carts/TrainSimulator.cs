@@ -18,22 +18,8 @@ namespace _13_Carts
                 world.MakeStep();
 
                 //Print(world);
-                Print(world, world.Carts[0]);
-                Console.ReadKey();
-
-                for(int i = 0; i < world.Carts.Count; i++)
-                {
-                    for (int j = i + 1; j < world.Carts.Count; j++)
-                    {
-                        if (world.Carts[i].Position.X == world.Carts[j].Position.X &&
-                            world.Carts[i].Position.Y == world.Carts[j].Position.Y)
-                        {
-                            Console.WriteLine($"Collision at: ({world.Carts[i].Position.X},{world.Carts[i].Position.Y})");
-                            Console.ReadKey();
-                            return;
-                        }
-                    }
-                }
+                //Print(world, world.Carts[0]);
+                //Console.ReadKey();
             }
         }
 
@@ -368,11 +354,27 @@ namespace _13_Carts
 
         public void MakeStep()
         {
-            var movingOrder = this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X).ToList();
+            IEnumerable<Cart> CartsInReadingOrder() => this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X);
+            var movingOrderList = CartsInReadingOrder().ToList();
 
-            foreach (var cart in movingOrder)
+            foreach (var cart in movingOrderList)
             {
                 cart.Move();
+
+                foreach(var collidingCart in CartsInReadingOrder())
+                {
+                    if (collidingCart == cart)
+                    {
+                        break;
+                    }
+
+                    if (cart.Position.X == collidingCart.Position.X &&
+                        cart.Position.Y == collidingCart.Position.Y)
+                    {
+                        Console.WriteLine($"Collission at ({cart.Position.X}, {cart.Position.Y})");
+                        Console.ReadKey();
+                    }
+                }
             }
         }
     }

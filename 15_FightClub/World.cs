@@ -37,25 +37,31 @@ namespace _15_FightClub
             }
         }
 
-        public void MakeRound()
+        public bool MakeRound()
         {
             var movesLeft = this.Fighters.OrderBy(w => w.Position.Y * 1000 + w.Position.Y).ToList();
-
+            
             while (movesLeft.Count > 0)
             {
                 var fighter = movesLeft[0];
                 movesLeft.Remove(fighter);
 
-                fighter.MakeTurn();
+                if (!fighter.MakeTurn(this))
+                {
+                    return false;
+                }
 
                 var deadUnits = this.Fighters.Where(w => w.HP <= 0).ToList();
 
                 foreach (var dead in deadUnits)
                 {
+                    dead.Tile.Occupy(null);
                     this.Fighters.Remove(dead);
                     movesLeft.Remove(dead);
                 }
             }
+
+            return true;
         }
     }
 }

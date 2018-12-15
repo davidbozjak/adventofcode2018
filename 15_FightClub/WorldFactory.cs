@@ -33,7 +33,7 @@ namespace _15_FightClub
                             fighter = new Elf(x, y);
                             break;
                         default:
-                            tile = new Tile(x, y);
+                            tile = new Tile(x, y, null);
                             break;
                     }
 

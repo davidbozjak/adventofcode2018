@@ -11,11 +11,10 @@ namespace _15_FightClub
             var world = factory.GetInitialState();
             var printer = new WorldPrinter();
 
-            for (int round = 0; ; round++)
+            for (int round = 0; world.MakeRound(); round++)
             {
-                world.MakeRound();
-
                 printer.Print(world);
+                Console.WriteLine($"After round {round}");
                 Console.ReadKey();
             }
 

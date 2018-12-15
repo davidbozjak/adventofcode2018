@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SantasToolbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace _13_Carts
     public enum IntersectionDecision { TurnLeft, Straight, TurnRight };
     public enum Direction { Up, Down, Left, Right };
 
-    class World
+    class World : IWorld
     {
         public World(IEnumerable<Track> tracks, IEnumerable<Cart> carts)
         {
@@ -19,6 +20,17 @@ namespace _13_Carts
         public IReadOnlyList<Track> Tracks { get; }
 
         public IList<Cart> Carts { get; }
+
+        public IList<IWorldObject> WorldObjects
+        {
+            get
+            {
+                var list = new List<IWorldObject>();
+                list.AddRange(Tracks);
+                list.AddRange(Carts);
+                return list;
+            }
+        }
 
         public void MakeStep()
         {

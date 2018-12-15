@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace _13_Carts
 {
@@ -11,10 +10,13 @@ namespace _13_Carts
         static void Main(string[] args)
         {
             var world = GetInitialState();
-            
+            var worldPrinter = new WorldPrinter();
+
             for (int tick = 0; world.Carts.Count > 1; tick++)
             {
                 world.MakeStep();
+                worldPrinter.Print(world, world.Carts[0]);
+                Console.ReadKey();
             }
 
             var lastCart = world.Carts[0];
@@ -23,44 +25,7 @@ namespace _13_Carts
             Console.WriteLine($"Last cart at position ({lastCart.Position.X},{lastCart.Position.Y})");
             Console.ReadKey();
         }
-
-        private static void Print(World world)
-        {
-            int maxX = world.Tracks.Max(w => w.Position.X);
-            int maxY = world.Tracks.Max(w => w.Position.Y);
-
-            Print(world, 0, maxX, 0, maxY);
-        }
-
-        private static void Print(World world, Cart cart)
-        {
-            Print(world, cart.Position.X - 5, cart.Position.X + 5, cart.Position.Y - 5, cart.Position.Y + 5);
-        }
-
-        private static void Print(World world, int minX, int maxX, int minY, int maxY)
-        {
-            Console.Clear();
-            
-            for (int y = minY; y <= maxY; y++)
-            {
-                var row = new StringBuilder(new string(Enumerable.Repeat(' ', (maxX - minX) + 1).ToArray()));
-
-                foreach (var track in world.Tracks.Where(w => w.Position.Y == y && w.Position.X >= minX && w.Position.X <= maxX))
-                {
-                    row[track.Position.X - minX] = track.CharRepresentation;
-                }
-
-                foreach (var cart in world.Carts.Where(w => w.Position.Y == y && w.Position.X >= minX && w.Position.X <= maxX))
-                {
-                    row[cart.Position.X - minX] = cart.CharRepresentation;
-                }
-                if (!string.IsNullOrWhiteSpace(row.ToString()))
-                {
-                    Console.WriteLine(row);
-                }
-            }
-        }
-
+        
         private static World GetInitialState()
         {
             var rowProvider = new InputProvider<string>("Input.txt", GetString);

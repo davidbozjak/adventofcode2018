@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SantasToolbox;
+using System;
 using System.Drawing;
 
 namespace _13_Carts
 {
-    class Cart
+    class Cart : IWorldObject
     {
         private static int idCounter = 1;
-
+        
         public Cart(Track track, Direction direction)
         {
             this.Track = track;
@@ -23,6 +24,8 @@ namespace _13_Carts
         public IntersectionDecision IntersectionDecision { get; private set; } = IntersectionDecision.TurnLeft;
 
         public Point Position => this.Track.Position;
+
+        public int Z => this.Track.Z + 1;
 
         public char CharRepresentation
         {

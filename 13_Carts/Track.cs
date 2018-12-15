@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SantasToolbox;
+using System;
 using System.Drawing;
 
 namespace _13_Carts
 {
-    class Track
+    class Track : IWorldObject
     {
         public Track(int x, int y, TrackDirection direction)
         {
@@ -12,6 +13,8 @@ namespace _13_Carts
         }
 
         public Point Position { get; }
+
+        public int Z => 0;
 
         public TrackDirection TrackDirection { get; }
 

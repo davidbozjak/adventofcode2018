@@ -1,5 +1,6 @@
 ﻿using SantasToolbox;
 using System;
+using System.Linq;
 
 namespace _15_FightClub
 {
@@ -11,17 +12,21 @@ namespace _15_FightClub
             var world = factory.GetInitialState();
             var printer = new WorldPrinter();
 
-            printer.Print(world);
-            Console.ReadKey();
+            int numOfFullRounds = -1;
 
-            for (int round = 0; world.MakeRound(); round++)
+            do
             {
+                numOfFullRounds++;
                 printer.Print(world);
-                Console.WriteLine($"After round {round}");
-                Console.ReadKey();
-            }
-
+                Console.WriteLine($"After round {numOfFullRounds}");
+                //Console.ReadKey();
+            } while (world.MakeRound());
+            
+            var sumOfHitpoints = world.Fighters.Sum(w => w.HP);
+            
             Console.WriteLine();
+            Console.WriteLine($"Done. Number of full rounds: {numOfFullRounds} Sum of hitpoints remainging: {sumOfHitpoints}");
+            Console.Write($"Part 1: {numOfFullRounds * sumOfHitpoints}");
             Console.ReadKey();
         }
     }

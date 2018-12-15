@@ -9,14 +9,13 @@ namespace _15_FightClub
     class PathFinder
     {
         private readonly Tile start;
-        private readonly Tile goal;
         private readonly World world;
         private readonly Lazy<List<Tile>> lazySteps;
 
         public PathFinder(Tile start, Tile goal, World world)
         {
             this.start = start;
-            this.goal = goal;
+            this.Goal = goal;
             this.world = world;
             this.lazySteps = new Lazy<List<Tile>>(AStar);
         }
@@ -29,6 +28,8 @@ namespace _15_FightClub
 
         public Tile NextStep =>
             this.lazySteps.Value[0];
+
+        public Tile Goal { get; }
 
         private List<Tile> AStar()
         {
@@ -56,14 +57,14 @@ namespace _15_FightClub
             var fScore = new Dictionary<Tile, int>
             {
                 // For the first node, that value is completely heuristic.
-                { this.start, this.start.Position.Distance(this.goal.Position) }
+                { this.start, this.start.Position.Distance(this.Goal.Position) }
             };
 
             while (openSet.Count > 0)
             {
                 var current = openSet.OrderBy(w => DictValueOrMax(w, fScore)).First(); //the node in openSet having the lowest fScore[] value
 
-                if (current == this.goal)
+                if (current == this.Goal)
                 {
                     var steps = new List<Tile>();
                     ReconstructPath(cameFrom, current, steps);
@@ -97,7 +98,7 @@ namespace _15_FightClub
                     InsertOrUpdate(neighbor, current, cameFrom);
                     InsertOrUpdate(neighbor, tentative_gScore, gScores);
 
-                    var newBestScore = gScore + neighbor.Position.Distance(this.goal.Position);
+                    var newBestScore = gScore + neighbor.Position.Distance(this.Goal.Position);
                     InsertOrUpdate(neighbor, newBestScore, fScore);
                 }
             }

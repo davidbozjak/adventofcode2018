@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace _13_Carts
 {
+    public enum TrackDirection { Vertical, Horizontal, LeftTurn, RightTurn, Intersection }
+    public enum IntersectionDecision { TurnLeft, Straight, TurnRight };
+    public enum Direction { Up, Down, Left, Right };
+
     class World
     {
         public World(IEnumerable<Track> tracks, IEnumerable<Cart> carts)

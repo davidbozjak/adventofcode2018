@@ -1,7 +1,6 @@
 ﻿using SantasToolbox;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -148,16 +147,4 @@ namespace _13_Carts
             return !string.IsNullOrWhiteSpace(value);
         }
     }
-
-    public enum TrackDirection { Vertical, Horizontal, LeftTurn, RightTurn, Intersection }
-    public enum IntersectionDecision { TurnLeft, Straight, TurnRight };
-    public enum Direction { Up, Down, Left, Right };
-
-    
-
-    
-
-    
-
-    
 }

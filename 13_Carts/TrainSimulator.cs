@@ -215,11 +215,16 @@ namespace _13_Carts
 
     class Cart
     {
+        private static int idCounter = 1;
+
         public Cart(Track track, Direction direction)
         {
             this.Track = track;
             this.Direction = direction;
+            this.Id = idCounter++;
         }
+
+        public int Id { get; }
 
         public Track Track { get; private set; }
 
@@ -264,14 +269,14 @@ namespace _13_Carts
                 switch (this.IntersectionDecision)
                 {
                     case IntersectionDecision.TurnLeft:
-                        this.Direction = TurnLeft();
+                        this.Direction = IntersectionLeft();
                         this.IntersectionDecision = IntersectionDecision.Straight;
                         break;
                     case IntersectionDecision.Straight:
                         this.IntersectionDecision = IntersectionDecision.TurnRight;
                         break;
                     case IntersectionDecision.TurnRight:
-                        this.Direction = TurnRight();
+                        this.Direction = IntersectionRight();
                         this.IntersectionDecision = IntersectionDecision.TurnLeft;
                         break;
                 }
@@ -308,6 +313,40 @@ namespace _13_Carts
                         return Direction.Down;
                     case Direction.Right:
                         return Direction.Up;
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+
+            Direction IntersectionLeft()
+            {
+                switch (this.Direction)
+                {
+                    case Direction.Up:
+                        return Direction.Left;
+                    case Direction.Down:
+                        return Direction.Right;
+                    case Direction.Left:
+                        return Direction.Down;
+                    case Direction.Right:
+                        return Direction.Up;
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+
+            Direction IntersectionRight()
+            {
+                switch (this.Direction)
+                {
+                    case Direction.Up:
+                        return Direction.Right;
+                    case Direction.Down:
+                        return Direction.Left;
+                    case Direction.Left:
+                        return Direction.Up;
+                    case Direction.Right:
+                        return Direction.Down;
                     default:
                         throw new ArgumentException();
                 }

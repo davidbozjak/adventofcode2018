@@ -39,7 +39,7 @@ namespace _15_FightClub
 
         public bool MakeRound()
         {
-            var movesLeft = this.Fighters.OrderBy(w => w.Position.Y * 1000 + w.Position.Y).ToList();
+            var movesLeft = this.Fighters.OrderBy(w => w.Position.Y * 1000 + w.Position.X).ToList();
             
             while (movesLeft.Count > 0)
             {
@@ -56,7 +56,7 @@ namespace _15_FightClub
                 foreach (var dead in deadUnits)
                 {
                     dead.Tile.Occupy(null);
-                    this.Fighters.Remove(dead);
+                    this.fighters.Remove(dead);
                     movesLeft.Remove(dead);
                 }
             }

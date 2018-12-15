@@ -82,6 +82,7 @@ namespace _15_FightClub
             }
 
             tile.Occupy(this);
+            this.Tile.Occupy(null);
             this.Tile = tile;
         }
 

@@ -43,8 +43,16 @@ namespace _15_FightClub
                     return true;
                 }
 
-                // temp, proof of concept
-                Move(world.Tiles.Where(w => w.IsAvaliable).Where(w => IsAdjacent(this, w)).First());
+                var paths = platforms.Select(w => new PathFinder(this.Tile, w, world));
+
+                var chosenPath = paths
+                    .Where(w => w.IsReachable)
+                    .OrderBy(w => w.NumberOfSteps).FirstOrDefault();
+
+                if (chosenPath != null)
+                {
+                    this.Move(chosenPath.NextStep);
+                }
             }
 
             Attack(targets);
@@ -58,7 +66,7 @@ namespace _15_FightClub
         {
             return world.Tiles
                 .Where(w => w.IsAvaliable)
-                .Where(tile => targets.Any(target => IsAdjacent(target, tile)));
+                .Where(tile => targets.Any(target => tile.IsAdjacent(target.Tile)));
         }
 
         private void Move(Tile tile)
@@ -68,7 +76,7 @@ namespace _15_FightClub
                 throw new Exception("Never expecting moving to null");
             }
 
-            if (!IsAdjacent(this, tile))
+            if (!tile.IsAdjacent(this.Tile))
             {
                 throw new Exception("Can only move to adjacent tiles");
             }
@@ -93,14 +101,7 @@ namespace _15_FightClub
 
         private IEnumerable<Fighter> GetAdjacentTargets(IEnumerable<Fighter> targets)
         {
-            return targets.Where(w => IsAdjacent(this, w.Tile));
-        }
-
-        private static bool IsAdjacent(Fighter target, Tile tile)
-        {
-            var distance = target.Position.Distance(tile.Position);
-
-            return target.Position != tile.Position && distance == 1;
+            return targets.Where(w => this.Tile.IsAdjacent(w.Tile));
         }
     }
 

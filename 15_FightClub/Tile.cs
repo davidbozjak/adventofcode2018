@@ -1,6 +1,8 @@
 ﻿using System;
 using SantasToolbox;
 using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace _15_FightClub
 {
@@ -16,13 +18,25 @@ namespace _15_FightClub
 
         public Point Position { get; }
 
+        public bool IsAdjacent(Tile tile)
+        {
+            var distance = this.Position.Distance(tile.Position);
+
+            return this.Position != tile.Position && distance == 1;
+        }
+
+        public IEnumerable<Tile> GetAdjacentTiles(World world)
+        {
+            return world.Tiles.Where(IsAdjacent);
+        }
+
         public virtual char CharRepresentation => ' ';
 
         public virtual bool IsAvaliable => this.Fighter == null;
 
         public virtual void Occupy(Fighter fighter)
         {
-            if (this.Fighter != null)
+            if (fighter != null && this.Fighter != null)
             {
                 throw new Exception("Occupied!");
             }

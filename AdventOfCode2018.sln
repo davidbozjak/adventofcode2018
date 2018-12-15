@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13_Carts", "13_Carts\13_Car
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "14_Recipes", "14_Recipes\14_Recipes.csproj", "{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_FightClub", "FightClub\15_FightClub.csproj", "{4E44B46D-E095-457F-B1C3-9184D72177C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_FightClub", "15_FightClub\15_FightClub.csproj", "{4E44B46D-E095-457F-B1C3-9184D72177C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

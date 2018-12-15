@@ -21,7 +21,7 @@ namespace _13_Carts
 
         public IList<Cart> Carts { get; }
 
-        public IList<IWorldObject> WorldObjects
+        public IEnumerable<IWorldObject> WorldObjects
         {
             get
             {

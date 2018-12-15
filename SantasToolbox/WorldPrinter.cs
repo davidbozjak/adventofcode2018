@@ -17,7 +17,7 @@ namespace SantasToolbox
 
     public interface IWorld
     {
-        IList<IWorldObject> WorldObjects { get; }
+        IEnumerable<IWorldObject> WorldObjects { get; }
     }
 
     public class WorldPrinter

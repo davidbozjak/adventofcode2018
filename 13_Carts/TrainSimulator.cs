@@ -13,14 +13,16 @@ namespace _13_Carts
         {
             var world = GetInitialState();
             
-            for (int tick = 0; ; tick++)
+            for (int tick = 0; world.Carts.Count > 1; tick++)
             {
                 world.MakeStep();
-
-                //Print(world);
-                //Print(world, world.Carts[0]);
-                //Console.ReadKey();
             }
+
+            var lastCart = world.Carts[0];
+
+            Console.WriteLine();
+            Console.WriteLine($"Last cart at position ({lastCart.Position.X},{lastCart.Position.Y})");
+            Console.ReadKey();
         }
 
         private static void Print(World world)
@@ -350,20 +352,28 @@ namespace _13_Carts
 
         public IReadOnlyList<Track> Tracks { get; }
 
-        public IReadOnlyList<Cart> Carts { get; }
+        public IList<Cart> Carts { get; }
 
         public void MakeStep()
         {
             IEnumerable<Cart> CartsInReadingOrder() => this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X);
-            var movingOrderList = CartsInReadingOrder().ToList();
+            var cartsToMove = CartsInReadingOrder().ToList();
 
-            foreach (var cart in movingOrderList)
+            while(cartsToMove.Count > 0)
             {
+                var cart = cartsToMove[0];
+                cartsToMove.Remove(cart);
+
                 cart.Move();
 
                 foreach(var collidingCart in CartsInReadingOrder())
                 {
                     if (collidingCart == cart)
+                    {
+                        continue;
+                    }
+
+                    if (collidingCart.Position.Y > cart.Position.Y)
                     {
                         break;
                     }
@@ -372,7 +382,10 @@ namespace _13_Carts
                         cart.Position.Y == collidingCart.Position.Y)
                     {
                         Console.WriteLine($"Collission at ({cart.Position.X}, {cart.Position.Y})");
-                        Console.ReadKey();
+
+                        this.Carts.Remove(cart);
+                        this.Carts.Remove(collidingCart);
+                        cartsToMove.Remove(collidingCart);
                     }
                 }
             }

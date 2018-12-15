@@ -18,7 +18,8 @@ namespace _13_Carts
                 world.MakeStep();
 
                 //Print(world);
-                //Console.ReadKey();
+                Print(world, world.Carts[0]);
+                Console.ReadKey();
 
                 for(int i = 0; i < world.Carts.Count; i++)
                 {
@@ -38,26 +39,38 @@ namespace _13_Carts
 
         private static void Print(World world)
         {
-            Console.Clear();
-
             int maxX = world.Tracks.Max(w => w.Position.X);
             int maxY = world.Tracks.Max(w => w.Position.Y);
 
-            for (int y = 0; y <= maxY; y++)
+            Print(world, 0, maxX, 0, maxY);
+        }
+
+        private static void Print(World world, Cart cart)
+        {
+            Print(world, cart.Position.X - 5, cart.Position.X + 5, cart.Position.Y - 5, cart.Position.Y + 5);
+        }
+
+        private static void Print(World world, int minX, int maxX, int minY, int maxY)
+        {
+            Console.Clear();
+            
+            for (int y = minY; y <= maxY; y++)
             {
-                var row = new StringBuilder(new string(Enumerable.Repeat(' ', maxX + 1).ToArray()));
+                var row = new StringBuilder(new string(Enumerable.Repeat(' ', (maxX - minX) + 1).ToArray()));
 
-                foreach (var track in world.Tracks.Where(w => w.Position.Y == y))
+                foreach (var track in world.Tracks.Where(w => w.Position.Y == y && w.Position.X >= minX && w.Position.X <= maxX))
                 {
-                    row[track.Position.X] = track.CharRepresentation;
+                    row[track.Position.X - minX] = track.CharRepresentation;
                 }
 
-                foreach (var cart in world.Carts.Where(w => w.Position.Y == y))
+                foreach (var cart in world.Carts.Where(w => w.Position.Y == y && w.Position.X >= minX && w.Position.X <= maxX))
                 {
-                    row[cart.Position.X] = cart.CharRepresentation;
+                    row[cart.Position.X - minX] = cart.CharRepresentation;
                 }
-
-                Console.WriteLine(row);
+                if (!string.IsNullOrWhiteSpace(row.ToString()))
+                {
+                    Console.WriteLine(row);
+                }
             }
         }
 

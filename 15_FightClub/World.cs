@@ -26,16 +26,7 @@ namespace _15_FightClub
 
         public IReadOnlyList<Elf> Elves => this.Fighters.OfType<Elf>().ToList();
 
-        public IEnumerable<IWorldObject> WorldObjects
-        {
-            get
-            {
-                var list = new List<IWorldObject>();
-                list.AddRange(this.Tiles);
-                list.AddRange(this.Fighters);
-                return list;
-            }
-        }
+        public IEnumerable<IWorldObject> WorldObjects => this.Tiles;
 
         public bool MakeRound()
         {
@@ -60,7 +51,7 @@ namespace _15_FightClub
                     movesLeft.Remove(dead);
                 }
             }
-
+            
             return true;
         }
     }

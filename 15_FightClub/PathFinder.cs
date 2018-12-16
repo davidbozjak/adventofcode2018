@@ -5,29 +5,28 @@ using System.Linq;
 
 namespace _15_FightClub
 {
-    // quick and dirty A* implementation
     class PathFinder
     {
         private readonly Tile start;
         private readonly World world;
-        private readonly Lazy<List<Solution>> lazySteps;
+        private readonly Lazy<List<Solution>> solutions;
 
         public PathFinder(Tile start, Tile goal, World world)
         {
             this.start = start;
             this.Goal = goal;
             this.world = world;
-            this.lazySteps = new Lazy<List<Solution>>(AStar);
+            this.solutions = new Lazy<List<Solution>>(AStar);
         }
 
         public bool IsReachable =>
-            this.lazySteps.Value != null;
+            this.solutions.Value != null;
 
         public int NumberOfSteps => 
-            this.lazySteps.Value[0].NumberOfSteps;
+            this.solutions.Value[0].NumberOfSteps;
 
         public Tile NextStep =>
-            this.lazySteps.Value.OrderBy(w => w.ReadingOrder).First().NextStep;
+            this.solutions.Value.OrderBy(w => w.ReadingOrder).First().NextStep;
 
         public Tile Goal { get; }
 

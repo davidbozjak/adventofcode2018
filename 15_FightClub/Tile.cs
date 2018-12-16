@@ -30,7 +30,7 @@ namespace _15_FightClub
             return world.Tiles.Where(IsAdjacent);
         }
 
-        public virtual char CharRepresentation => ' ';
+        public virtual char CharRepresentation => this.Fighter?.CharRepresentation ?? ' ';
 
         public virtual bool IsAvaliable => this.Fighter == null;
 

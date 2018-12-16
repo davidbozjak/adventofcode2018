@@ -34,7 +34,7 @@ namespace _13_Carts
 
         public void MakeStep()
         {
-            IEnumerable<Cart> CartsInReadingOrder() => this.Carts.OrderBy(w => w.Position.Y * 1000 + w.Position.X);
+            IEnumerable<Cart> CartsInReadingOrder() => this.Carts.OrderBy(w => w.Position.ReadingOrder());
             var cartsToMove = CartsInReadingOrder().ToList();
 
             while (cartsToMove.Count > 0)

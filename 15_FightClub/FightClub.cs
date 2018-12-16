@@ -20,7 +20,8 @@ namespace _15_FightClub
                 printer.Print(world);
                 Console.WriteLine($"After round {numOfFullRounds}");
                 //Console.ReadKey();
-            } while (world.MakeRound());
+            }
+            while (world.MakeRound());
             
             var sumOfHitpoints = world.Fighters.Sum(w => w.HP);
             

@@ -47,7 +47,7 @@ namespace _15_FightClub
 
                 var chosenPath = paths
                     .Where(w => w.IsReachable)
-                    .OrderBy(w => w.NumberOfSteps * 10000 + w.Goal.Position.Y * 100 + w.Goal.Position.X).FirstOrDefault();
+                    .OrderBy(w => w.NumberOfSteps * 10000 + w.Goal.Position.ReadingOrder()).FirstOrDefault();
 
                 if (chosenPath != null)
                 {
@@ -95,7 +95,7 @@ namespace _15_FightClub
                 return;
             }
 
-            var prioTarget = adjacentTargets.OrderBy(w => w.HP * 10000 + w.Position.Y * 100 + w.Position.X).First();
+            var prioTarget = adjacentTargets.OrderBy(w => w.HP * 10000 + w.Position.ReadingOrder()).First();
 
             prioTarget.HP -= this.AttackPower;
         }

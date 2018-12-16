@@ -9,5 +9,10 @@ namespace SantasToolbox
         {
             return Math.Abs(point.X - other.X) + Math.Abs(point.Y - other.Y);
         }
+
+        public static int ReadingOrder(this Point point)
+        {
+            return point.Y * 1000 + point.X;
+        }
     }
 }

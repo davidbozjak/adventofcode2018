@@ -39,7 +39,7 @@ namespace _15_FightClub
 
         public bool MakeRound()
         {
-            var movesLeft = this.Fighters.OrderBy(w => w.Position.Y * 1000 + w.Position.X).ToList();
+            var movesLeft = this.Fighters.OrderBy(w => w.Position.ReadingOrder()).ToList();
             
             while (movesLeft.Count > 0)
             {

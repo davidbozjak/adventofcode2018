@@ -43,15 +43,15 @@ namespace _15_FightClub
                     return true;
                 }
 
-                var paths = platforms.Select(w => new PathFinder(this.Tile, w, world));
+                var goals = platforms.Select(w => new PathFinder(this.Tile, w, world));
 
-                var chosenPath = paths
+                var chosenGoal = goals
                     .Where(w => w.IsReachable)
                     .OrderBy(w => w.NumberOfSteps * 10000 + w.Goal.Position.ReadingOrder()).FirstOrDefault();
 
-                if (chosenPath != null)
+                if (chosenGoal != null)
                 {
-                    this.Move(chosenPath.NextStep);
+                    this.Move(chosenGoal.NextStep);
                 }
             }
 

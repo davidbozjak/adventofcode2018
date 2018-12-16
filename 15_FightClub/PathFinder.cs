@@ -10,29 +10,31 @@ namespace _15_FightClub
     {
         private readonly Tile start;
         private readonly World world;
-        private readonly Lazy<List<Tile>> lazySteps;
+        private readonly Lazy<List<Solution>> lazySteps;
 
         public PathFinder(Tile start, Tile goal, World world)
         {
             this.start = start;
             this.Goal = goal;
             this.world = world;
-            this.lazySteps = new Lazy<List<Tile>>(AStar);
+            this.lazySteps = new Lazy<List<Solution>>(AStar);
         }
 
         public bool IsReachable =>
             this.lazySteps.Value != null;
 
         public int NumberOfSteps => 
-            this.lazySteps.Value.Count;
+            this.lazySteps.Value[0].NumberOfSteps;
 
         public Tile NextStep =>
-            this.lazySteps.Value[0];
+            this.lazySteps.Value.OrderBy(w => w.ReadingOrder).First().NextStep;
 
         public Tile Goal { get; }
 
-        private List<Tile> AStar()
+        private List<Solution> AStar()
         {
+            var solutions = new List<Solution>();
+
             // The set of nodes already evaluated
             var closedSet = new List<Tile>();
 
@@ -66,14 +68,29 @@ namespace _15_FightClub
 
                 if (current == this.Goal)
                 {
-                    var steps = new List<Tile>();
-                    ReconstructPath(cameFrom, current, steps);
-                    return steps;
+                    var bestFoundSolution = solutions.Count > 0 ? solutions[0].NumberOfSteps : int.MaxValue;
+                    var currentSolution = gScores[current];
+
+                    if (currentSolution <= bestFoundSolution)
+                    {
+                        var steps = new List<Tile>();
+                        ReconstructPath(cameFrom, current, steps);
+                        solutions.Add(new Solution(steps));
+                    }
+                    else
+                    {
+                        return solutions;
+                    }
+
+                    openSet.Remove(current);
+                    continue;
                 }
-
-                openSet.Remove(current);
-                closedSet.Add(current);
-
+                else
+                {
+                    openSet.Remove(current);
+                    closedSet.Add(current);
+                }
+                
                 foreach (var neighbor in current.GetAdjacentTiles(this.world).Where(w => w.IsAvaliable))
                 {
                     if (closedSet.Contains(neighbor))
@@ -103,7 +120,7 @@ namespace _15_FightClub
                 }
             }
 
-            return null;
+            return solutions.Count > 0 ? solutions : null;
         }
 
         private void ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current, List<Tile> steps)
@@ -136,6 +153,22 @@ namespace _15_FightClub
             {
                 dict[key] = value;
             }
+        }
+
+        private class Solution
+        {
+            public Solution(List<Tile> steps)
+            {
+                this.Steps = steps;
+            }
+
+            public List<Tile> Steps { get; }
+
+            public int NumberOfSteps => this.Steps.Count;
+
+            public Tile NextStep => this.Steps[0];
+
+            public int ReadingOrder => this.NextStep.Position.ReadingOrder();
         }
     }
 }

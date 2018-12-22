@@ -4,7 +4,7 @@ using System.IO;
 
 namespace SantasToolbox
 {
-    public class InputProvider<T> : IEnumerator<T>
+    public class InputProvider<T> : IEnumerator<T>, IEnumerable<T>
     {
         public delegate bool StringToTConverter(string input, out T result);
         
@@ -48,6 +48,19 @@ namespace SantasToolbox
         public void Reset()
         {
             this.fileStream.Reset();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            while (this.MoveNext())
+            {
+                yield return this.Current;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

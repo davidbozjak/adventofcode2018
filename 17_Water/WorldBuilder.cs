@@ -7,17 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace _17_Water
 {
-    class World : IWorld
-    {
-        private readonly List<Tile> tiles;
-        public IEnumerable<IWorldObject> WorldObjects => this.tiles.ToList();
-
-        public World(IEnumerable<Tile> initialTiles)
-        {
-            this.tiles = initialTiles.ToList();
-        }
-    }
-
     class WorldFactory
     {
         public World GetWorld()

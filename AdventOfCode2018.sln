@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1_Frequency", "1_Frequency\1_Frequency.csproj", "{08035ADF-DF93-412A-B2FE-67F5592D7C61}"
 EndProject
@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13_Carts", "13_Carts\13_Car
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "14_Recipes", "14_Recipes\14_Recipes.csproj", "{7D5452CD-441D-4525-AAD3-5BAF92BACDE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_FightClub", "15_FightClub\15_FightClub.csproj", "{4E44B46D-E095-457F-B1C3-9184D72177C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "15_FightClub", "15_FightClub\15_FightClub.csproj", "{4E44B46D-E095-457F-B1C3-9184D72177C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17_Water", "17_Water\17_Water.csproj", "{09E8F425-9191-4128-83BB-02630B16F5D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{4E44B46D-E095-457F-B1C3-9184D72177C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E44B46D-E095-457F-B1C3-9184D72177C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E44B46D-E095-457F-B1C3-9184D72177C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09E8F425-9191-4128-83BB-02630B16F5D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09E8F425-9191-4128-83BB-02630B16F5D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09E8F425-9191-4128-83BB-02630B16F5D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09E8F425-9191-4128-83BB-02630B16F5D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

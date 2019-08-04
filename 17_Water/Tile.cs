@@ -41,29 +41,4 @@ namespace _17_Water
             this.IsClay = isClay;
         }
     }
-
-    interface IWater
-    {
-        int Id { get; }
-    }
-
-    class WaterFactory
-    {
-        private int count = 0;
-
-        public IWater GetWater()
-        {
-            return new Water(count++);
-        }
-
-        private sealed class Water : IWater
-        {
-            public int Id { get; }
-
-            public Water(int id)
-            {
-                this.Id = id;
-            }
-        }
-    }
 }

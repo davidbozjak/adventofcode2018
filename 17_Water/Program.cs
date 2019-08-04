@@ -14,14 +14,17 @@ namespace _17_Water
             printer.Print(world);
 
             while (world.MakeStep(o => ObserveWorld(printer, world, o))) ;
+
+            printer.Print(world);
+            Console.WriteLine($"Wet tiles: {world.NumberOfWetTiles}");
         }
 
         private static void ObserveWorld(WorldPrinter printer, World world, IWorldObject objectOfInterest)
         {
-            printer.Print(world, objectOfInterest);
+            //printer.Print(world, objectOfInterest);
             Console.WriteLine($"Wet tiles: {world.NumberOfWetTiles}");
             //Console.ReadKey();
-            Task.Delay(50).Wait();
+            //Task.Delay(10).Wait();
         }
     }
 }

@@ -11,26 +11,44 @@ namespace _17_Water
         private readonly List<Tile> tiles;
         private readonly WaterFactory waterFactory = new WaterFactory();
         private readonly Point springPosition = new Point(500, 0);
-        private readonly int worldCutoff;
+        private readonly int worldCutoffBottom;
+        private readonly int worldCutoffTop;
 
         public IEnumerable<IWorldObject> WorldObjects => this.tiles.ToList();
 
-        public int NumberOfWetTiles => this.tiles.Where(w => w.HasBeenWet).Count();
+        public int NumberOfWetTiles => this.tiles
+            .Where(w => w.Position.Y >= worldCutoffTop && w.Position.Y <= worldCutoffBottom)
+            .Where(w => w.HasBeenWet).Count();
 
         public World(IEnumerable<Tile> initialTiles)
         {
             this.tiles = initialTiles.ToList();
-            this.worldCutoff = this.tiles.Max(w => w.Position.Y) + 2;
+            this.worldCutoffBottom = this.tiles.Max(w => w.Position.Y);
+            this.worldCutoffTop = this.tiles.Min(w => w.Position.Y);
         }
 
         public bool MakeStep(Action<IWorldObject> worldObserver)
         {
             var water = this.waterFactory.GetWater();
 
-            bool hasFoundWallLeft = false;
+            List<Tile> crossRoads = new List<Tile>();
+            List<Tile> exitAfter = new List<Tile>();
 
-            for (Tile tile = GetOrCreateTileAt(this.springPosition); tile.Position.Y < this.worldCutoff; )
+            for (Tile tile = GetOrCreateTileAt(this.springPosition); true; )
             {
+                if (tile.Position.Y > this.worldCutoffBottom)
+                {
+                    var lastCrossRoads = crossRoads.OrderByDescending(w => w.Position.Y).First();
+
+                    if (exitAfter.Contains(lastCrossRoads))
+                    {
+                        return false;
+                    }
+
+                    exitAfter.Add(lastCrossRoads);
+                    tile = lastCrossRoads;
+                }
+
                 tile.Water = water;
 
                 worldObserver(tile);
@@ -41,7 +59,6 @@ namespace _17_Water
                 {
                     TransferWater(tileBelow, tile);
                     tile = tileBelow;
-                    hasFoundWallLeft = false;
                     continue;
                 }
 
@@ -63,15 +80,12 @@ namespace _17_Water
                     return true;
                 }
 
-                if (!hasFoundWallLeft)
+                if (!crossRoads.Contains(tile))
                 {
+                    crossRoads.Add(tile);
                     var tileLeft = GetOrCreateTileAt(tile.Position.Left());
-                    if (tileLeft.IsClay)
-                    {
-                        hasFoundWallLeft = true;
-                    }
-                    else
-                    {
+                    if (!tileLeft.IsClay)
+                    { 
                         TransferWater(tileLeft, tile);
                         tile = tileLeft;
                         continue;

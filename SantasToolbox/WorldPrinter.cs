@@ -24,15 +24,24 @@ namespace SantasToolbox
     {
         public void Print(IWorld world)
         {
+            if (!world.WorldObjects.Any())
+            {
+                Console.WriteLine("<<< Blank World >>>");
+                return;
+            }
+
             int maxX = world.WorldObjects.Max(w => w.Position.X);
             int maxY = world.WorldObjects.Max(w => w.Position.Y);
 
-            Print(world, 0, maxX, 0, maxY);
+            int minX = world.WorldObjects.Min(w => w.Position.X);
+            int minY = world.WorldObjects.Min(w => w.Position.Y);
+
+            Print(world, minX, maxX, minY, maxY);
         }
 
-        public void Print(IWorld world, IWorldObject cart)
+        public void Print(IWorld world, IWorldObject objectOfInterest)
         {
-            Print(world, cart.Position.X - 5, cart.Position.X + 5, cart.Position.Y - 5, cart.Position.Y + 5);
+            Print(world, objectOfInterest.Position.X - 5, objectOfInterest.Position.X + 5, objectOfInterest.Position.Y - 5, objectOfInterest.Position.Y + 5);
         }
 
         public void Print(IWorld world, int minX, int maxX, int minY, int maxY)

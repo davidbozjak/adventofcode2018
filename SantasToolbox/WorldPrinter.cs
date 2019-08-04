@@ -22,6 +22,15 @@ namespace SantasToolbox
 
     public class WorldPrinter
     {
+        private readonly bool skipEmptyLines;
+        private readonly int frameSize;
+
+        public WorldPrinter(bool skipEmptyLines = true, int frameSize = 5)
+        {
+            this.skipEmptyLines = skipEmptyLines;
+            this.frameSize = frameSize;
+        }
+
         public void Print(IWorld world)
         {
             if (!world.WorldObjects.Any())
@@ -41,7 +50,7 @@ namespace SantasToolbox
 
         public void Print(IWorld world, IWorldObject objectOfInterest)
         {
-            Print(world, objectOfInterest.Position.X - 5, objectOfInterest.Position.X + 5, objectOfInterest.Position.Y - 5, objectOfInterest.Position.Y + 5);
+            Print(world, objectOfInterest.Position.X - frameSize, objectOfInterest.Position.X + frameSize, objectOfInterest.Position.Y - frameSize, objectOfInterest.Position.Y + frameSize);
         }
 
         public void Print(IWorld world, int minX, int maxX, int minY, int maxY)
@@ -57,7 +66,7 @@ namespace SantasToolbox
                     row[track.Position.X - minX] = track.CharRepresentation;
                 }
                 
-                if (!string.IsNullOrWhiteSpace(row.ToString()))
+                if (!skipEmptyLines || !string.IsNullOrWhiteSpace(row.ToString()))
                 {
                     Console.WriteLine(row);
                 }

@@ -22,7 +22,7 @@ namespace SantasToolbox
 
         public static Point Right(this Point point)
         {
-            return new Point(point.X - 1, point.Y);
+            return new Point(point.X + 1, point.Y);
         }
 
         public static Point Up(this Point point)

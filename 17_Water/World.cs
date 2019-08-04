@@ -11,67 +11,109 @@ namespace _17_Water
         private readonly List<Tile> tiles;
         private readonly WaterFactory waterFactory = new WaterFactory();
         private readonly Point springPosition = new Point(500, 0);
+        private readonly int worldCutoff;
 
         public IEnumerable<IWorldObject> WorldObjects => this.tiles.ToList();
+
+        public int NumberOfWetTiles => this.tiles.Where(w => w.HasBeenWet).Count();
 
         public World(IEnumerable<Tile> initialTiles)
         {
             this.tiles = initialTiles.ToList();
+            this.worldCutoff = this.tiles.Max(w => w.Position.Y) + 2;
         }
 
         public bool MakeStep(Action<IWorldObject> worldObserver)
         {
             var water = this.waterFactory.GetWater();
 
-            Tile tile = GetOrCreateTileAt(this.springPosition);
+            bool hasFoundWallLeft = false;
 
-            if (tile.Water != null)
+            for (Tile tile = GetOrCreateTileAt(this.springPosition); tile.Position.Y < this.worldCutoff; )
+            {
+                tile.Water = water;
+
+                worldObserver(tile);
+
+                var tileBelow = GetOrCreateTileAt(tile.Position.Down());
+
+                if (!tileBelow.IsClay && tileBelow.Water == null)
+                {
+                    TransferWater(tileBelow, tile);
+                    tile = tileBelow;
+                    hasFoundWallLeft = false;
+                    continue;
+                }
+
+                if (tileBelow.Water != null)
+                {
+                    if (PushWaterFromTile(tileBelow))
+                    {
+                        TransferWater(tileBelow, tile);
+                        return true;
+                    }
+                    else
+                    {
+                        tileBelow.Water.IsStuck = true;
+                    }
+                }
+
+                if (WaterCanSettleOn(tile))
+                {
+                    return true;
+                }
+
+                if (!hasFoundWallLeft)
+                {
+                    var tileLeft = GetOrCreateTileAt(tile.Position.Left());
+                    if (tileLeft.IsClay)
+                    {
+                        hasFoundWallLeft = true;
+                    }
+                    else
+                    {
+                        TransferWater(tileLeft, tile);
+                        tile = tileLeft;
+                        continue;
+                    }
+                }
+
+                var tileRight = GetOrCreateTileAt(tile.Position.Right());
+                TransferWater(tileRight, tile);
+                tile = tileRight;
+            }
+
+            return false;
+        }
+
+        private bool WaterCanSettleOn(Tile tile)
+        {
+            if (tile.IsClay) throw new Exception("not expecting to try to settle in clay, invalid flow");
+
+            // watter can settle if there if on clay or water below is stuck and there is clay on left and right with levels below filled
+            var tileBelow = GetOrCreateTileAt(tile.Position.Down());
+            if (!tileBelow.IsClay && !tileBelow.Water?.IsStuck == true) return false;
+
+            var clayOnLeft = this.tiles
+                .Where(w => w.IsClay && w.Position.Y == tile.Position.Y && w.Position.X < tile.Position.X)
+                .OrderByDescending(w => w.Position.X)
+                .FirstOrDefault();
+            var clayOnRight = this.tiles
+                .Where(w => w.IsClay && w.Position.Y == tile.Position.Y && w.Position.X > tile.Position.X)
+                .OrderBy(w => w.Position.X)
+                .FirstOrDefault();
+
+            if (clayOnLeft == null || clayOnRight == null)
             {
                 return false;
             }
 
-            tile.Water = water;
-
-            // try to move as far down as you can
-            while (true)
+            for (int x = clayOnLeft.Position.X + 1; x < clayOnRight.Position.X; x++)
             {
-                worldObserver(tile);
-                
-                var tileBelow = GetOrCreateTileAt(tile.Position.Down());
+                var tileToCheck = GetOrCreateTileAt(new Point(x, tile.Position.Y + 1));
 
-                if (!tileBelow.IsClay)
+                if (!tileToCheck.IsClay && (tileToCheck.Water == null || tileToCheck.Water.IsStuck == false))
                 {
-                    if (tileBelow.Water == null)
-                    {
-                        TransferWater(tileBelow, tile);
-                        tile = tileBelow;
-                    }
-                    else
-                    {
-                        if (!tileBelow.Water.IsStuck)
-                        {
-                            var couldPush = PushWaterFromTile(tileBelow);
-
-                            if (couldPush)
-                            {
-                                TransferWater(tileBelow, tile);
-                                return true;
-                            }
-                            else
-                            {
-                                tileBelow.Water.IsStuck = true;
-                                return false;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (tile.Water == water)
-                    {
-                        return true;
-                    }
-
                     return false;
                 }
             }
@@ -79,17 +121,33 @@ namespace _17_Water
             return true;
         }
 
-        private bool PushWaterFromTile(Tile tile)
+        private bool PushWaterFromTile(Tile tile, List<Tile> visitedTiles = null)
         {
+            visitedTiles = visitedTiles ?? new List<Tile>();
+
             var tileBelow = GetOrCreateTileAt(tile.Position.Down());
-            if (clearTile(tileBelow, tile)) return true;
-            
+
+            if (!visitedTiles.Contains(tileBelow))
+            {
+                visitedTiles.Add(tileBelow);
+                if (clearTile(tileBelow, tile)) return true;
+            }
+
             var tileLeft = GetOrCreateTileAt(tile.Position.Left());
-            if (clearTile(tileLeft, tile)) return true;
+
+            if (!visitedTiles.Contains(tileLeft))
+            {
+                visitedTiles.Add(tileLeft);
+                if (clearTile(tileLeft, tile)) return true;
+            }
 
             var tileRight = GetOrCreateTileAt(tile.Position.Right());
-            if (clearTile(tileRight, tile)) return true;
 
+            if (!visitedTiles.Contains(tileRight))
+            {
+                visitedTiles.Add(tileRight);
+                if (clearTile(tileRight, tile)) return true;
+            }
             return false;
 
             bool clearTile(Tile tTarget, Tile tSource)
@@ -103,7 +161,7 @@ namespace _17_Water
 
                 if (!tTarget.Water.IsStuck)
                 {
-                    if (PushWaterFromTile(tTarget))
+                    if (PushWaterFromTile(tTarget, visitedTiles))
                     {
                         if (tTarget.Water != null) throw new Exception("expecting the tile below to now be empty");
 

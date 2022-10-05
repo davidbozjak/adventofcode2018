@@ -5,32 +5,63 @@ var input = new StringInputProvider("Input1.txt") { EndAtEmptyLine = false };
 
 var snapshots = parser.AddRange(input).Select(w => w.Build()).ToList();
 
-var possibleInstructions = snapshots.Select(w => SnapshotInterpreter.GetAllOpcodesThatMatch(w)).ToList();
+var possibleInstructions = snapshots.Select(w => new { OptCode = w.Instruction[0], Possibilities = SnapshotInterpreter.GetAllOpcodesThatMatch(w) }).ToList();
 
-Console.WriteLine($"Part 1: {possibleInstructions.Count(w => w.Count() > 2)}");
+Console.WriteLine($"Part 1: {possibleInstructions.Count(w => w.Possibilities.Count() > 2)}");
+
+var possibilities = Enumerable.Range(0, 16).Select(w => possibleInstructions.Where(ww => ww.OptCode == w).SelectMany(ww => ww.Possibilities).ToHashSet()).ToArray();
+
+while (possibilities.Any(w => w.Count > 1))
+{
+    //assuming there is always one where it is only 1
+    for(int optCode = 0; optCode <= 15; optCode++)
+    {
+        var count = possibilities[optCode].Count;
+
+        if (count == 1)
+        {
+            //Remove this from all others
+            var instruction = possibilities[optCode].First();
+
+            for (int i = 0; i <= 15; i++)
+            {
+                if (i == optCode) continue;
+
+                possibilities[i].Remove(instruction);
+            }
+        }
+    }
+}
+
+var programInstructions = new StringInputProvider("Input2.txt");
+var computer = new Computer(programInstructions, Enumerable.Range(0, 16).ToDictionary(w => w.ToString(), w => possibilities[w].First()));
+
+computer.Run();
+
+Console.WriteLine($"Part 2: {computer.GetRegisterValue("0")}");
+
+public enum Opcode
+{
+    addr,
+    addi,
+    mulr,
+    muli,
+    banr,
+    bani,
+    borr,
+    bori,
+    setr,
+    seti,
+    gtir,
+    gtri,
+    gtrr,
+    eqir,
+    eqri,
+    eqrr
+};
 
 static class SnapshotInterpreter
 {
-    public enum Opcode
-    {
-        addr,
-        addi,
-        mulr,
-        muli,
-        banr,
-        bani,
-        borr,
-        bori,
-        setr,
-        seti,
-        gtir,
-        gtri,
-        gtrr,
-        eqir,
-        eqri,
-        eqrr
-    }
-
     public static IEnumerable<Opcode> GetAllOpcodesThatMatch(Snapshot snapshot)
     {
         var list = new List<Opcode?>()
@@ -201,10 +232,7 @@ static class SnapshotInterpreter
     }
 }
 
-record Snapshot(int[] Before, int[] After, int[] Instruction)
-{
-    
-}
+record Snapshot(int[] Before, int[] After, int[] Instruction);
 
 class SnapshotBuilder
 {

@@ -14,7 +14,7 @@ public class MultiLineParser<T>
         this.additionFunc = additionFunc;
     }
 
-    public IList<T> AddRange(IEnumerator<string?> input)
+    public IEnumerable<T> AddRange(IEnumerator<string?> input)
     {
         var list = new List<T>();
 

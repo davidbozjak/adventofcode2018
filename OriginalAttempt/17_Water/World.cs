@@ -10,7 +10,7 @@ namespace _17_Water
     {
         private readonly List<Tile> tiles;
         private readonly WaterFactory waterFactory = new WaterFactory();
-        private readonly Point springPosition = new Point(500, 0);
+        private Point springPosition = new Point(500, 0);   // mutable to save overhead
         private readonly int worldCutoffBottom;
         private readonly int worldCutoffTop;
 
@@ -62,7 +62,7 @@ namespace _17_Water
                     continue;
                 }
 
-                if (tileBelow.Water != null)
+                if (tileBelow.Water != null && !tile.Water.IsStuck)
                 {
                     if (PushWaterFromTile(tileBelow))
                     {

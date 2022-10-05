@@ -6,6 +6,7 @@ namespace _17_Water
 {
     class Program
     {
+        static int LastNumber;
         static void Main(string[] args)
         {
             var factory = new WorldFactory();
@@ -21,8 +22,17 @@ namespace _17_Water
 
         private static void ObserveWorld(WorldPrinter printer, World world, IWorldObject objectOfInterest)
         {
+            var number = world.NumberOfWetTiles;
+
+            if (number != LastNumber)
+            {
+                LastNumber = number;
+                printer.Print(world, objectOfInterest);
+                Console.WriteLine($"Wet tiles: {LastNumber}");
+            }
+
             //printer.Print(world, objectOfInterest);
-            Console.WriteLine($"Wet tiles: {world.NumberOfWetTiles}");
+            
             //Console.ReadKey();
             //Task.Delay(10).Wait();
         }

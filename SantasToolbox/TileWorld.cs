@@ -22,7 +22,7 @@ namespace SantasToolbox
         {
             Position = new Point(x, y);
             this.IsTraversable = isTraversable;
-            this.cachedNeighbours = new Cached<IEnumerable<Tile>>(() => fillTraversibleNeighboursFunc(this));
+            this.cachedNeighbours = new Cached<IEnumerable<Tile>>(() => fillTraversibleNeighboursFunc(this).ToList());
         }
 
         public bool Equals(Tile? other)
@@ -35,11 +35,14 @@ namespace SantasToolbox
     public class TileWorld : IWorld
     {
         private readonly List<Tile> allTiles = new();
+        private readonly bool allowDiagnoalNeighbours;
 
         public IEnumerable<IWorldObject> WorldObjects => this.allTiles;
 
-        public TileWorld(IEnumerable<string> map, Func<int, int, char, Func<Tile, IEnumerable<Tile>>, Tile> tileCreatingFunc)
+        public TileWorld(IEnumerable<string> map, bool allowDiagnoalNeighbours, Func<int, int, char, Func<Tile, IEnumerable<Tile>>, Tile> tileCreatingFunc)
         {
+            this.allowDiagnoalNeighbours = allowDiagnoalNeighbours;
+
             int y = 0;
             foreach (var line in map)
             {
@@ -55,7 +58,14 @@ namespace SantasToolbox
 
         private IEnumerable<Tile> GetTraversibleNeighboursOfTile(Tile tile)
         {
-            return this.allTiles.Where(w => w.IsTraversable && tile.Position.IsNeighbour(w.Position));
+            Func<Point, Point, bool> neighbourFunc = this.allowDiagnoalNeighbours ?
+                (p1, p2) => p1.IsNeighbourWithDiagnoals(p2) :
+                (p1, p2) => p1.IsNeighbour(p2);
+
+            return this.allTiles.Where(w => w.IsTraversable &&
+                neighbourFunc(w.Position, tile.Position));
         }
+
+
     }
 }

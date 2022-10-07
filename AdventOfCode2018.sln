@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day_Template", "Day_Templat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day16_Opcode", "Day16_Opcode\Day16_Opcode.csproj", "{20C22CA3-FD50-46DC-9089-8FE3CD553C89}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day18_GameOfLumber", "Day18_GameOfLumber\Day18_GameOfLumber.csproj", "{6CD34D62-504A-4E28-A82A-BCD9FF080860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{20C22CA3-FD50-46DC-9089-8FE3CD553C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C22CA3-FD50-46DC-9089-8FE3CD553C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C22CA3-FD50-46DC-9089-8FE3CD553C89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD34D62-504A-4E28-A82A-BCD9FF080860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD34D62-504A-4E28-A82A-BCD9FF080860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD34D62-504A-4E28-A82A-BCD9FF080860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD34D62-504A-4E28-A82A-BCD9FF080860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

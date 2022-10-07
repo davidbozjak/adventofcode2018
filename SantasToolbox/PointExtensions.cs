@@ -47,4 +47,14 @@ public static class PointExtensions
 
         return false;
     }
+
+    public static bool IsNeighbourWithDiagnoals(this Point point, Point otherPoint)
+    {
+        var absDiffX = Math.Abs(point.X - otherPoint.X);
+        var absDiffY = Math.Abs(point.Y - otherPoint.Y);
+
+        return absDiffX + absDiffY > 0 &&
+            absDiffX < 2 &&
+            absDiffY < 2;
+    }
 }

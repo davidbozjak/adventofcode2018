@@ -10,12 +10,13 @@ var startTile = world.AddKnownRoom(0, 0);
 
 WalkThroughString(input, startTile, world);
 
-var maxDistance = int.MinValue;
 var distances = new Dictionary<Tile, int>();
 
 foreach (var room in world.WorldObjects.Cast<Tile>())
 {
     var path = AStarPathfinder.FindPath(startTile, room, t => t.Cost, t => t.KnownNeighbours);
+
+    if (path == null) throw new Exception();
 
     distances.Add(room, path.Count - 1);
 }

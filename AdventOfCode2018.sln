@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day20_RegexMap", "Day20_Reg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day21_Halting", "Day21_Halting\Day21_Halting.csproj", "{BDB162AD-B382-49BE-8129-0619CF881C23}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day22_ProceduralCave", "Day22_ProceduralCave\Day22_ProceduralCave.csproj", "{FCD5F16F-8C45-4C32-9C90-C655D37FF24B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{BDB162AD-B382-49BE-8129-0619CF881C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB162AD-B382-49BE-8129-0619CF881C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB162AD-B382-49BE-8129-0619CF881C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD5F16F-8C45-4C32-9C90-C655D37FF24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD5F16F-8C45-4C32-9C90-C655D37FF24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD5F16F-8C45-4C32-9C90-C655D37FF24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD5F16F-8C45-4C32-9C90-C655D37FF24B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

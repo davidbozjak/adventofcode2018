@@ -32,9 +32,62 @@ public class WorldPrinter
 
     public void Print(IWorld world)
     {
+        if (clearScreenFirst)
+            Console.Clear();
+
+        Print(world, Console.WriteLine);
+    }
+
+    public void Print(IWorld world, IWorldObject objectOfInterest)
+    {
+        if (clearScreenFirst)
+            Console.Clear();
+
+        Print(world, objectOfInterest, Console.WriteLine);
+    }
+
+    public void Print(IWorld world, int minX, int maxX, int minY, int maxY)
+    {
+        if (clearScreenFirst)
+            Console.Clear();
+
+        Print(world, minX, maxX, minY, maxY, Console.WriteLine);
+    }
+
+    public void PrintToFile(IWorld world, string filename)
+    {
+        using (var writer = new StreamWriter(filename))
+        {
+            Print(world, writer.WriteLine);
+        }
+    }
+
+    public void PrintToFile(IWorld world, IWorldObject objectOfInterest, string filename)
+    {
+        using (var writer = new StreamWriter(filename))
+        {
+            Print(world, objectOfInterest, writer.WriteLine);
+        }
+    }
+
+    public void PrintToFile(IWorld world, int minX, int maxX, int minY, int maxY, string filename)
+    {
+        using (var writer = new StreamWriter(filename))
+        {
+            Print(world, minX, maxX, minY, maxY, writer.WriteLine);
+        }
+    }
+
+    private void Print(IWorld world, IWorldObject objectOfInterest, Action<string> printLineFunc)
+    {
+        Print(world, objectOfInterest.Position.X - frameSize, objectOfInterest.Position.X + frameSize, objectOfInterest.Position.Y - frameSize, objectOfInterest.Position.Y + frameSize, printLineFunc);
+    }
+
+    private void Print(IWorld world, Action<string> printLineFunc)
+    {
         if (!world.WorldObjects.Any())
         {
-            Console.WriteLine("<<< Blank World >>>");
+            printLineFunc("<<< Blank World >>>");
             return;
         }
 
@@ -44,21 +97,11 @@ public class WorldPrinter
         int minX = world.WorldObjects.Min(w => w.Position.X);
         int minY = world.WorldObjects.Min(w => w.Position.Y);
 
-        Print(world, minX, maxX, minY, maxY);
+        Print(world, minX, maxX, minY, maxY, printLineFunc);
     }
 
-    public void Print(IWorld world, IWorldObject objectOfInterest)
+    private void Print(IWorld world, int minX, int maxX, int minY, int maxY, Action<string> printLineFunc)
     {
-        Print(world, objectOfInterest.Position.X - frameSize, objectOfInterest.Position.X + frameSize, objectOfInterest.Position.Y - frameSize, objectOfInterest.Position.Y + frameSize);
-    }
-
-    public void Print(IWorld world, int minX, int maxX, int minY, int maxY)
-    {
-        if (this.clearScreenFirst)
-        {
-            Console.Clear();
-        }
-
         for (int y = minY; y <= maxY; y++)
         {
             var row = new StringBuilder(new string(Enumerable.Repeat(' ', (maxX - minX) + 1).ToArray()));
@@ -70,7 +113,7 @@ public class WorldPrinter
 
             if (!skipEmptyLines || !string.IsNullOrWhiteSpace(row.ToString()))
             {
-                Console.WriteLine(row);
+                printLineFunc(row.ToString());
             }
         }
     }

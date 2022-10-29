@@ -49,9 +49,10 @@ var printer = new WorldPrinter();
 printer.PrintToFile(world, "Output_World.txt");
 
 var reachableTiles = tilesFactory.AllCreatedInstances
-    .Where(w => w.Position.Y >= absoluteMinY && w.Position.Y <= absoluteMaxY)
-    .Count(w => w.State == GroundType.StandingWater || w.State == GroundType.WetSand);
-Console.WriteLine($"Part 1: {reachableTiles}");
+    .Where(w => w.Position.Y >= absoluteMinY && w.Position.Y <= absoluteMaxY);
+
+Console.WriteLine($"Part 1: {reachableTiles.Count(w => w.State == GroundType.StandingWater || w.State == GroundType.WetSand)}");
+Console.WriteLine($"Part 2: {reachableTiles.Count(w => w.State == GroundType.StandingWater)}");
 
 void PrintAroundSpring(Spring spring)
 {
@@ -190,6 +191,24 @@ class Reservoir
         }
 
         this.OverflowSprings = springs;
+
+        SetRowToStandingWater(top, x => x - 1);
+        SetRowToStandingWater(top, x => x + 1);
+
+        void SetRowToStandingWater(int y, Func<int, int> incFunc)
+        {
+            for (int x = incFunc(spring.Position.X); true; x = incFunc(x))
+            {
+                var tile = tileFactory((x, top));
+
+                if (tile.State != GroundType.StandingWater)
+                    break;
+
+                tile.State = GroundType.WetSand;
+            }
+
+            tileFactory((spring.Position.X, top)).State = GroundType.WetSand;
+        }
 
         Spring? TryCreateSpring(int y, Func<int, int> incFunc)
         {

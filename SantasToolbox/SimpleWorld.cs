@@ -1,4 +1,6 @@
-﻿namespace SantasToolbox
+﻿using System.Drawing;
+
+namespace SantasToolbox
 {
     public class SimpleWorld<T> : IWorld
         where T : IWorldObject
@@ -16,15 +18,31 @@
         public int Height => this.MaxY - this.MinY + 1;
 
         private readonly List<T> worldObjects;
-        private readonly Dictionary<(int x, int y), T> spatialWorldObjects;
+        private readonly Dictionary<Point, T> spatialWorldObjects;
 
         public SimpleWorld(IEnumerable<T> objects)
         {
             this.worldObjects = objects.ToList();
-            spatialWorldObjects = objects.ToDictionary(w => (w.Position.X, w.Position.Y));
+            
+            //Construct dict of spatial objects, but only keep the TopZ
+            this.spatialWorldObjects = new();
+
+            foreach (var o in objects)
+            {
+                if (spatialWorldObjects.ContainsKey(o.Position))
+                {
+                    if (o.Z <= spatialWorldObjects[o.Position].Z)
+                        continue;
+                }
+
+                spatialWorldObjects[o.Position] = o;
+            }
         }
 
         public T GetObjectAt(int x, int y)
-            => this.spatialWorldObjects[(x, y)];
+            => this.GetObjectAt(new Point(x, y));
+
+        public T GetObjectAt(Point point)
+            => this.spatialWorldObjects[point];
     }
 }

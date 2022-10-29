@@ -23,7 +23,7 @@ while (springsToProcess.Count > 0)
 {
     var spring = springsToProcess.Dequeue();
 
-    PrintAroundSpring(spring);
+    //PrintAroundSpring(spring);
 
     var reservoir = GetReservoirForSpring(spring, tilesFactory.GetOrCreateInstance, absoluteMaxY);
 

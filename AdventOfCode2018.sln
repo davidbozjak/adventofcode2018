@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day17_Reservoirs", "Day17_R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day15_AoE", "Day15_AoE\Day15_AoE.csproj", "{29943956-1A81-4ECB-9D7A-006A07DF1CAA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day25_HotChocolatePortal", "Day25_HotChocolatePortal\Day25_HotChocolatePortal.csproj", "{A6A2CB0D-5781-4247-B57D-05892E0A822B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6A2CB0D-5781-4247-B57D-05892E0A822B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6A2CB0D-5781-4247-B57D-05892E0A822B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6A2CB0D-5781-4247-B57D-05892E0A822B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6A2CB0D-5781-4247-B57D-05892E0A822B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

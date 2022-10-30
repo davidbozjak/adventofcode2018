@@ -2,10 +2,11 @@
 
 namespace SantasToolbox
 {
+    [System.Diagnostics.DebuggerDisplay("({Position.X}, {Position.Y})")]
     public class Tile : IWorldObject, INode, IEquatable<Tile>
     {
         public Point Position { get; }
-
+        
         public virtual char CharRepresentation => this.IsTraversable ? '.' : '#';
 
         public int Z => 0;
@@ -56,6 +57,12 @@ namespace SantasToolbox
             }
         }
 
+        public Tile GetTileAt(int x, int y)
+            => GetTileAt(new Point(x, y));
+
+        public Tile GetTileAt(Point point) =>
+            this.allTiles.First(w => w.Position == point);
+
         private IEnumerable<Tile> GetTraversibleNeighboursOfTile(Tile tile)
         {
             Func<Point, Point, bool> neighbourFunc = this.allowDiagnoalNeighbours ?
@@ -65,7 +72,5 @@ namespace SantasToolbox
             return this.allTiles.Where(w => w.IsTraversable &&
                 neighbourFunc(w.Position, tile.Position));
         }
-
-
     }
 }

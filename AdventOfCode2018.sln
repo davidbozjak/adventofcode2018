@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day24_ImuneBattle", "Day24_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day17_Reservoirs", "Day17_Reservoirs\Day17_Reservoirs.csproj", "{FD39D0B8-A465-4466-8237-6E38A271CC56}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day15_AoE", "Day15_AoE\Day15_AoE.csproj", "{29943956-1A81-4ECB-9D7A-006A07DF1CAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{FD39D0B8-A465-4466-8237-6E38A271CC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD39D0B8-A465-4466-8237-6E38A271CC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD39D0B8-A465-4466-8237-6E38A271CC56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29943956-1A81-4ECB-9D7A-006A07DF1CAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

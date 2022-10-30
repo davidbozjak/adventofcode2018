@@ -29,7 +29,18 @@ namespace SantasToolbox
         public bool Equals(Tile? other)
         {
             if (other == null) return false;
-            return base.Equals(other);
+
+            return this.Position.Equals(other.Position);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Tile);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Position.GetHashCode();
         }
     }
 
